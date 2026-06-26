@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 021122eb2f8046d47a6600fe8f9a7e6d
+timeCreated: 1520576285
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 115488
+  packageName: Quick Outline
+  packageVersion: 1.1
+  assetPath: Assets/QuickOutline/Resources/Materials/OutlineFill.mat
+  uploadId: 485303

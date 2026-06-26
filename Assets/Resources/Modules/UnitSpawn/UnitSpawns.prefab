@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6340876950390625343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2005780884391263889}
+  - component: {fileID: 4739554480476414827}
+  - component: {fileID: 1652965119436014371}
+  - component: {fileID: -5201335177725436070}
+  m_Layer: 0
+  m_Name: UnitSpawns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2005780884391263889
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340876950390625343}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4739554480476414827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340876950390625343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca8e763438bb604884d9d3d9dc5046d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncToId: -1
+  triggerModule: {fileID: 0}
+  unitAmaunt: 5
+  pathToUnit: PhotonPrefabs/Anomalies/Demons/Demon
+--- !u!114 &1652965119436014371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340876950390625343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f8b690e2b3e9f48ad18d661a0e1d4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameterValues:
+  - paramName: Amaunt
+    defaultValues:
+    - 3
+    selectedValue: 0
+    parameterType: 0
+  - paramName: Type
+    defaultValues:
+    - PhotonPrefabs/Anomalies/Demons/Demon
+    - PhotonPrefabs/Anomalies/Insurgent/Insurgent_AK
+    - PhotonPrefabs/Anomalies/Insurgent/Insurgent_AK_group
+    selectedValue: 0
+    parameterType: 1
+  syncToLinePrefab: {fileID: 7286719201729175708, guid: 774d66f682ac81c44946ffade881f3ce, type: 3}
+--- !u!114 &-5201335177725436070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340876950390625343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 524f2557728f81b4788f6f1c5df29e93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectID: 0
+  editorObject: {fileID: 11400000, guid: 6cd9145f5a1b93242b2ada5408fe0a6c, type: 2}

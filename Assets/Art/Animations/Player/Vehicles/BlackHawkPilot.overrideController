@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BlackHawkPilot
+  m_Controller: {fileID: 9100000, guid: 9e3275af35a5ec940b826dc6300853b4, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 88edf93f07296bd4391352542fd1d5df, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 38c643810864129498f0f0945a0cb32e, type: 2}
