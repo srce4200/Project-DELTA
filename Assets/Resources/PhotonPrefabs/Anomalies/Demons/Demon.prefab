@@ -81,6 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!65 &2010237376576862512
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -255,6 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &6027187996741468586
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -517,6 +519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &3158248907534606536
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -669,7 +672,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.77
-  m_Speed: 6
+  m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 240
@@ -1049,6 +1052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &7189414240633544311
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1335,6 +1339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &7640340139351922970
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1667,6 +1672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 2
+  health: {fileID: 0}
 --- !u!1 &6484751815070384745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1716,6 +1722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &7526400833672463284
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1892,6 +1899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!1 &6945322525269515719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1973,6 +1981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &763579466137818732
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2150,6 +2159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &6813913276943388313
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2376,6 +2386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!1 &8685694862135209125
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,6 +2468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplier: 1
+  health: {fileID: 0}
 --- !u!136 &5559649284021110049
 CapsuleCollider:
   m_ObjectHideFlags: 0
