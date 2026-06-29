@@ -12,9 +12,9 @@ public class MainHeliRunner : MonoBehaviour
     AudioSource helicopterSound;
 
     [Space]
-    public float ForwardTiltForce = 10f;
-    public float BackwardTiltForce = 10f; 
-    public float TurnTiltForce = 30f;
+    public float pitchForce = 10f;
+    public float rollForce = 10f; 
+    public float yawForce = 30f;
     [Space]
     public float startUpPower;
     public float currentEnginePower;
@@ -46,6 +46,9 @@ public class MainHeliRunner : MonoBehaviour
     {
         mainRigidbody = GetComponent<Rigidbody>();
         helicopterSound = GetComponent<AudioSource>();
+
+        //mainRigidbody.ResetInertiaTensor();
+       // mainRigidbody.inertiaTensor = new Vector3(1f, 1f, 1f);
     }
     private void FixedUpdate()
     {
@@ -109,7 +112,7 @@ public class MainHeliRunner : MonoBehaviour
 
     void AutoHoverOn()
     {
-        float rotateAngle = rotateQE * TurnTiltForce * Time.deltaTime;
+        float rotateAngle = rotateQE * yawForce;
 
         Quaternion autoHRot = Quaternion.Euler(0f, rotateAngle, 0f);
         mainRigidbody.MoveRotation(mainRigidbody.rotation * autoHRot);
@@ -119,11 +122,11 @@ public class MainHeliRunner : MonoBehaviour
     {
         if(upDownInput > 0)
         {
-            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput);
+            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput * 2);
         }
         else if(upDownInput < 0)
         {
-            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput);
+            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput * 2);
         }
 
         mainRigidbody.AddRelativeForce(Vector3.up * (mainRigidbody.mass * Mathf.Abs(Physics.gravity.y)));
@@ -131,12 +134,12 @@ public class MainHeliRunner : MonoBehaviour
 
     void HeliCopterRotate()
     {
-        float pitchAngle = -yawMovement.x * ForwardTiltForce * Time.deltaTime;
-        float rollAngle = -yawMovement.y * ForwardTiltForce * Time.deltaTime;
-        float rotateAngle = rotateQE * TurnTiltForce * Time.deltaTime;
+        float pitchAngle = -yawMovement.x * pitchForce;
+        float rollAngle = -yawMovement.y * rollForce;
+        float rotateAngle = rotateQE * yawForce;
 
         // Apply the rotation to the helicopter's rigidbody
-        Quaternion rotation = Quaternion.Euler(pitchAngle, rotateAngle, rollAngle);
-        mainRigidbody.MoveRotation(mainRigidbody.rotation * rotation);
+        //Quaternion rotation = Quaternion.Euler(pitchAngle, rotateAngle, rollAngle);
+        mainRigidbody.AddRelativeTorque(new Vector3(pitchAngle, rotateAngle, rollAngle), ForceMode.Force);
     } 
 }
