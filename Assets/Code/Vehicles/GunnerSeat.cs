@@ -29,7 +29,7 @@ public class GunnerSeat : MonoBehaviour
         if (!PV.IsMine || !scriptEnabled) 
             return;
 
-        yaw -= Input.GetAxis("Mouse X");
+        yaw += Input.GetAxis("Mouse X");
         pitch += Input.GetAxis("Mouse Y");
 
         pitch = Mathf.Clamp(pitch, rotationLimitMin, rotationLimitMax);
