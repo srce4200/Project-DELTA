@@ -32,6 +32,7 @@ public class VehicleSeatCtrl : MonoBehaviour
         playerObject.GetComponent<CharacterController>().enabled = false; 
         playerObject.GetComponent<ChatControl>().EnableMouseInput(false);
         playerObject.GetComponent<ChatControl>().LockControls(true, true);
+       // playerObject.GetComponent<Animator>().SetBool("inVehicle", true);
 
         // Synchronize position and rotation across the network
         _photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
@@ -39,11 +40,15 @@ public class VehicleSeatCtrl : MonoBehaviour
     } 
     public void ExitVehicle()
     {
+        //lets try first unparent player so when wepon check we dont get error
+
+        _photonView.RPC("SyncPlayerPositionRotation", RpcTarget.AllBuffered, playerObject.GetComponent<PhotonView>().ViewID, false, enterPos, playerScale);  
+
         playerObject.GetComponent<ChatControl>().EnableMouseInput(true);
         playerObject.GetComponent<ChatControl>().LockControls(false, false);
         playerObject.GetComponent<CharacterController>().enabled = true;
+       //playerObject.GetComponent<Animator>().SetBool("inVehicle", false);
 
-        _photonView.RPC("SyncPlayerPositionRotation", RpcTarget.AllBuffered, playerObject.GetComponent<PhotonView>().ViewID, false, enterPos, playerScale);  
     }
 
     [PunRPC]

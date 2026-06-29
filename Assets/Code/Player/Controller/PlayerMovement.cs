@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (!PV.IsMine) 
+        if (!PV.IsMine)
             return;
         weaponSway.Aiming(isAiming);
 
@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
             playerAnimatorCont.SetBool("isSprinting", false);
             playerAnimatorCont.SetBool("isWalking", false);
         }
-        
+
     }
     void Walking()
     {
@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
         else if (laying)
             currentSpeed = walkSpeed / 4f;
         else
-            currentSpeed = walkSpeed;        
+            currentSpeed = walkSpeed;
     }
     void Sprinting()
     {
@@ -147,10 +147,10 @@ public class PlayerMovement : MonoBehaviour
     {
         _audioSource.clip = sound;
         if (!_audioSource.isPlaying)
-        {           
+        {
             _audioSource.enabled = true;
-            _audioSource.Play(); 
-        }       
+            _audioSource.Play();
+        }
     }
     void RegenStamina()
     {
@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 curStaminaRegenTime += Time.deltaTime;
             }
-        } 
+        }
     }
 
     #endregion
@@ -191,10 +191,10 @@ public class PlayerMovement : MonoBehaviour
             crouched = false;
             laying = !laying;
         }*/
-            
+
         playerAnimatorCont.SetBool("isCrouched", crouched);
         playerAnimatorCont.SetBool("isLaying", laying);
-        if(!crouched && !laying)
+        if (!crouched && !laying)
         {
             standingUI.SetActive(true);
             crouchingUI.SetActive(true);
@@ -210,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
 
     #region -JUMPING-Fall Damage-
     void Jump()
-    {        
+    {
         //Gravity
         controller.Move(velocity * Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;
@@ -227,7 +227,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void FallDamage()
     {
-        if(!controller.isGrounded && velocity.y < -18f)
+        if (!controller.isGrounded && velocity.y < -18f)
         {
             GetComponent<playerHealth>().TakeDamage(-velocity.y);
         }
@@ -288,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
         Lean();
         ZoomIn();
 
-        spine001.localRotation = Quaternion.Lerp(spine001.localRotation, XtargetRotation, smoothTime * Time.deltaTime);        
+        spine001.localRotation = Quaternion.Lerp(spine001.localRotation, XtargetRotation, smoothTime * Time.deltaTime);
     }
     void ZoomIn()
     {
@@ -299,7 +299,7 @@ public class PlayerMovement : MonoBehaviour
         {
             GetComponent<ProceduralAim>().ZoomInNOut(true, 0.8f);
         }
-        else 
+        else
         {
             GetComponent<ProceduralAim>().ZoomInNOut(false, 1);
         }

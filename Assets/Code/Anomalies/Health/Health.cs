@@ -37,9 +37,16 @@ public class Health : MonoBehaviour
     void Die()
     {
         //Instantiate(dieEffect, gameObject.transform.position, dieEffect.transform.rotation);
-        GetComponent<Ragdoll>().DoRagdoll();
+        if (GetComponent<Ragdoll>() != null)
+        {
+            GetComponent<Ragdoll>().DoRagdoll();
+            Invoke("DieDelay", 30);
+        }
+        else
+        {
+            DieDelay();
+        }
 
-        Invoke("DieDelay", 30);
     }
     void DieDelay()
     {

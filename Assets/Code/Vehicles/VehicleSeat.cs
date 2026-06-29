@@ -10,7 +10,7 @@ public class VehicleSeat : MonoBehaviour
 {  
     VehicleSeatCtrl vsc;
     GameObject player;
-    Transform playerCam; 
+    //Transform playerCam; 
 
     public AnimatorOverrideController seatAnim;
     RuntimeAnimatorController deafultAnimator; 
@@ -25,7 +25,7 @@ public class VehicleSeat : MonoBehaviour
     private void OnEnable()
     {
         player = GetComponent<VehicleSeatCtrl>().playerObject;
-        playerCam = player.GetComponentInChildren<Camera>().gameObject.transform;
+        //playerCam = player.GetComponentInChildren<Camera>().gameObject.transform;
 
         GetComponent<PhotonView>().RPC("RPC_Anim", RpcTarget.AllBuffered, false, player.GetComponent<PhotonView>().ViewID);
 

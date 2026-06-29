@@ -83,8 +83,10 @@ public class ChatControl : MonoBehaviour
     }
     void ControlsCheck()
     {
+        print("Checking enable disable thing)");
         if (currentlyChating || disableLook)
         {
+            print("Wriong");
             DisableAllMouseControls();
         }
         else
@@ -117,6 +119,7 @@ public class ChatControl : MonoBehaviour
 
     void EnableAllMouseControls()
     {
+        print("Enabeling input)");
         movement.enabled = true;
         DisableNVG(true);
         wpSwitch.enabled = true;
