@@ -65,14 +65,19 @@ public class PMCweapon : MonoBehaviour
         //recoil 
         currentAmmo--;
         handAnimations.SetTrigger("Shoot");
-        PV.GetComponent<PhotonView>().RPC("BulletShoot", RpcTarget.All);
-
-        float deviation = 1.0f - accuracy;
-        Vector3 shootDirection = gunBarell.transform.position + Random.insideUnitSphere * deviation * 2;
+        PV.RPC("BulletShoot", RpcTarget.All);
+        
         gunBarell.transform.LookAt(target);
-        PhotonNetwork.Instantiate("PhotonPrefabs/Temporary/" + bulletName, shootDirection, gunBarell.transform.rotation);
-    } 
+        float deviation = 1.0f - accuracy;
 
+        float spreadX = Random.Range(-deviation, deviation) * 15f;
+        float spreadY = Random.Range(-deviation, deviation) * 15f;
+
+        Quaternion spreadRotation = Quaternion.Euler(spreadX, spreadY, 0);
+        Quaternion finalBulletRotation = gunBarell.transform.rotation * spreadRotation;
+
+        PhotonNetwork.Instantiate("PhotonPrefabs/Temporary/" + bulletName, gunBarell.transform.position, finalBulletRotation);
+    }
     [PunRPC]
     void BulletShoot()
     {

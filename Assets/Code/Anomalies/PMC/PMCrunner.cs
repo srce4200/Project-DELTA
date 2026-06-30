@@ -97,7 +97,7 @@ public class PMCrunner : MonoBehaviour
                 Vector3 dir = (currentTarget.position - headPivot.position).normalized;
                 RaycastHit hit;
 
-                if (Physics.Raycast(headPivot.position, dir, out hit, 100f))
+                if (Physics.Raycast(headPivot.position, dir, out hit, 200f))
                 {
                     if (hit.transform == currentTarget)
                     {
@@ -181,7 +181,7 @@ public class PMCrunner : MonoBehaviour
             if (angleToTarget < 60)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(headPivot.position, directionToTarget, out hit, 150))
+                if (Physics.Raycast(headPivot.position, directionToTarget, out hit, 250))
                 {
                     if (hit.transform.CompareTag(enemyTag))
                     {

@@ -12,7 +12,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public int GameMode = 0; //0-Hive   //1-Survival
     string mapSelected;
     string factionSelected;
-    [HideInInspector] public string missionData = "";
+    public string missionData = "";
 
 
     [SerializeField] TMP_Dropdown mapDropdown;

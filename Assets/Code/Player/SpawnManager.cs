@@ -12,9 +12,15 @@ public class SpawnManager : MonoBehaviour
 	void Awake()
 	{
         spawnManagers.Add(this);
-	}
-
-	public Transform GetSpawnpoint()
+    }
+    private void OnDestroy()//cleanup of old spawn
+    {
+        if (spawnManagers.Contains(this))
+        {
+            spawnManagers.Remove(this);
+        }
+    }
+    public Transform GetSpawnpoint()
 	{
 		return spawnpoints[Random.Range(0, spawnpoints.Length)].transform;
 	}

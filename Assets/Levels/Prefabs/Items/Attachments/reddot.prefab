@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594892f9df39ac74c8e620fe3a2be3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomIn: 1.3
+  zoomIn: 1.4
   camZoomPos: {fileID: 2181508225073336138}
   sightCam: {fileID: 7611001810644251606}
   _pv: {fileID: 0}

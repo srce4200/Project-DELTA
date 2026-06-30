@@ -122,11 +122,11 @@ public class MainHeliRunner : MonoBehaviour
     {
         if(upDownInput > 0)
         {
-            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput * 2);
+            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput * 10);
         }
         else if(upDownInput < 0)
         {
-            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput * 2);
+            mainRigidbody.AddRelativeForce(Vector3.up * upDownInput * 10);
         }
 
         mainRigidbody.AddRelativeForce(Vector3.up * (mainRigidbody.mass * Mathf.Abs(Physics.gravity.y)));

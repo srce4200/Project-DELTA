@@ -1361,10 +1361,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 579675d1217fe6b4e837eaef62bce877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accuracy: 0
+  accuracy: 0.069
   bulletName: "7.62\xD751mm_I"
   fireSound: {fileID: 8300000, guid: 50943c1f9281f16449b1d941a1b4087e, type: 3}
-  weaponFirerate: 6
+  weaponFirerate: 9
   reloadSpeed: 3
   ammoInMag: 30
   isReloading: 0
@@ -2679,25 +2679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 0
-    Name: isWalking
-  - Type: 4
-    SynchronizeType: 0
-    Name: isSprinting
-  - Type: 4
-    SynchronizeType: 0
-    Name: isCrouched
-  - Type: 4
-    SynchronizeType: 0
-    Name: isLaying
-  - Type: 4
-    SynchronizeType: 0
-    Name: inVehicle
-  - Type: 4
-    SynchronizeType: 0
-    Name: isDowned
+  m_SynchronizeParameters: []
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -2711,7 +2693,7 @@ Animator:
   m_GameObject: {fileID: 6840582534816983378}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9e3275af35a5ec940b826dc6300853b4, type: 2}
+  m_Controller: {fileID: 22100000, guid: a5b823dc826d40d46a5c25cf57c9b8d2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2765,7 +2747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Weapon: {fileID: 3602609417768610424}
-  curState: 0
+  curState: 1
   headPivot: {fileID: 5929195647042561026}
 --- !u!135 &3406354690212657893
 SphereCollider:
@@ -2786,7 +2768,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 100
+  m_Radius: 250
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7695441375370692822
 GameObject:
