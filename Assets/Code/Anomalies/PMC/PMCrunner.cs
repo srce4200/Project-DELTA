@@ -1,11 +1,13 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
 
 public enum AiState{ safe, aware, combat} 
+
+
 public class PMCrunner : MonoBehaviour
 {
     string enemyTag = "ermacore faction";
@@ -20,9 +22,11 @@ public class PMCrunner : MonoBehaviour
     Vector3 currentWaypoint;
 
     // Position tracking
-    Vector3 lastKnownTarget;
+    
     bool hasFlanked = false;
     bool takenCover = false;
+
+    bool waypointInProgress;
 
     void Start()
     {
@@ -32,9 +36,9 @@ public class PMCrunner : MonoBehaviour
 
     void Update()
     {
-        //if (!PhotonNetwork.IsMasterClient) return;
-        if (Input.GetKeyDown(KeyCode.F))
-            takenCover = false;
+        if (!PhotonNetwork.IsMasterClient) return;
+
+
         if (curState == AiState.combat && currentTarget != null) //we see target, look at it
         {
             _Movement.LookAt(currentTarget);
@@ -52,23 +56,13 @@ public class PMCrunner : MonoBehaviour
 
         if (currentTarget != null)
         {
-            if(Vector3.Distance(lastKnownTarget, currentTarget.position) > 20)
-            {
-                takenCover = false;
-            }
-            lastKnownTarget = currentTarget.position;
+            takenCover = false;
             hasFlanked = false;
         }
     }
 
-    public void SetDestination(Vector3 pos)
-    {
-        StopCoroutine(MoveToDestination());
-        currentWaypoint = pos;
-        StartCoroutine(MoveToDestination());
-    }
-
-    public void SwicthState(AiState newState)
+    
+    public void SwitchState(AiState newState)
     {
         curState = newState;
         StopAllCoroutines();
@@ -82,6 +76,7 @@ public class PMCrunner : MonoBehaviour
                 StartCoroutine(ScanEnvironment());
                 break;
             case AiState.combat:
+                //StartCoroutine(ScanEnvironment());
                 StartCoroutine(CombatBehaviorLoop());
                 break;
         }
@@ -100,18 +95,16 @@ public class PMCrunner : MonoBehaviour
                 if (Physics.Raycast(headPivot.position, dir, out hit, 200f))
                 {
                     if (hit.transform == currentTarget)
-                    {
-                        lastKnownTarget = currentTarget.position;
+                    {;
                         _Weapon.Semi(currentTarget);
 
-                        if(!takenCover)
-                            TriggerFindCover();
+                        //if(!takenCover)
+                        //    TriggerFindCover();
                     }
-                    else if (!hasFlanked)
+                    else 
                     {
                         // Target hidden behind obstacle (e.g. building) -> Trigger Flank
-                        
-                        TriggerFlankRoute();
+
                     }
                 }
             }
@@ -119,15 +112,24 @@ public class PMCrunner : MonoBehaviour
         }
     }
 
-    void TriggerFlankRoute()
+    public void AssignWaypoint()
+    {
+
+    }
+    public void TriggerFlankRoute(Vector3 targetPos)
+    {
+        if(!hasFlanked)
+            FlankRoute(targetPos);
+    }
+    void FlankRoute(Vector3 targetPos)
     {
         hasFlanked = true;
 
-        Vector3 directionToLastKnown = (lastKnownTarget - transform.position).normalized;
+        Vector3 dirToTarget = (targetPos - transform.position).normalized;
         // Generate a perpendicular offset vector relative to the target line to move around the building
-        Vector3 leftOrRight = Random.value > 0.5f ? Vector3.Cross(directionToLastKnown, Vector3.up) : -Vector3.Cross(directionToLastKnown, Vector3.up);
+        Vector3 leftOrRight = Random.value > 0.5f ? Vector3.Cross(dirToTarget, Vector3.up) : -Vector3.Cross(dirToTarget, Vector3.up);
 
-        Vector3 flankPosition = lastKnownTarget + (leftOrRight * 12f) - (directionToLastKnown * 4f);
+        Vector3 flankPosition = targetPos + (leftOrRight * 12f) - (dirToTarget * 4f);
 
         NavMeshHit navHit;
         if (NavMesh.SamplePosition(flankPosition, out navHit, 15f, NavMesh.AllAreas))
@@ -135,17 +137,57 @@ public class PMCrunner : MonoBehaviour
             SetDestination(navHit.position);
         }
     }
-    void TriggerFindCover()
+    
+    public void TriggerAreaPatrol(Vector3 targetPos, float patrolTime)
     {
-        takenCover = true;
-        Vector3 coverPos = (_Movement.FindCover(currentTarget.position));
-        NavMeshHit navHit;
-        SetDestination(coverPos);
-        if (NavMesh.SamplePosition(coverPos, out navHit, 15f, NavMesh.AllAreas))
+        
+    }
+    void AreaPatrol(Vector3 targetPos)
+    {
+
+    }
+    public void TriggerFindCover(Vector3 enemyPos)
+    {
+        if (!takenCover)
         {
-            
+            SetDestination(FindCover(enemyPos));
         }
     }
+    Vector3 FindCover(Vector3 enemyPos)
+    {
+        for(int i = 0; i < 20; i++)
+        {
+            Vector3 randomPos = new Vector3(transform.position.x + Random.Range(-20, 20), transform.position.y , transform.position.z + Random.Range(-20, 20));
+            
+            RaycastHit hit;
+            NavMeshHit hitNav;
+
+            if (NavMesh.FindClosestEdge(randomPos, out hitNav, NavMesh.AllAreas))
+            {
+                randomPos = hitNav.position; 
+
+                if (Physics.Raycast(randomPos + Vector3.up, -(randomPos + Vector3.up - enemyPos), out hit, Mathf.Infinity)){ //we can hide?
+                    print(enemyPos);
+                    if(!hit.collider.tag.Equals("ermacore faction"))
+                    {
+                        return randomPos;
+                    }
+                }
+            }
+        }
+        print("ZERO");
+        return Vector3.zero;
+    }
+    
+    #region SetDestination
+    
+    public void SetDestination(Vector3 pos)
+    {
+        StopCoroutine(MoveToDestination());
+        currentWaypoint = pos;
+        StartCoroutine(MoveToDestination());
+    }
+
     IEnumerator MoveToDestination()
     {
         bool shouldSprint = (curState == AiState.combat);
@@ -157,10 +199,10 @@ public class PMCrunner : MonoBehaviour
         }
         _Movement.StopMoving();
     }
-
+    #endregion
 
     #region Scanning
-    float targetTimeOut = 5f;
+
     public Transform LookForTargetsInFOV()
     {
         for (int i = enemyColliders.Count - 1; i >= 0; i--)
@@ -190,12 +232,6 @@ public class PMCrunner : MonoBehaviour
                 }
             }
         }
-        if (currentTarget != null && targetTimeOut > 0)
-        {
-            targetTimeOut-= Time.deltaTime;
-            return currentTarget;
-        }
-        targetTimeOut = 5f;
         return null;
     }
     float maxAngle = 90;
@@ -224,8 +260,13 @@ public class PMCrunner : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(enemyTag)) 
-            enemyColliders.Add(other.transform);
+        if (other.CompareTag(enemyTag))
+        {
+            if (!enemyColliders.Contains(other.transform))
+            {
+                enemyColliders.Add(other.transform);
+            }
+        }
     }
     private void OnTriggerExit(Collider other)
     {

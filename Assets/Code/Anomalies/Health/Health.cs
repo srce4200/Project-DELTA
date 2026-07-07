@@ -31,8 +31,8 @@ public class Health : MonoBehaviour
             Die();
         }
 
-
-        GetComponent<SoundAlert>().SoundAlerted = true;
+        if(GetComponent<SoundAlert>())
+            GetComponent<SoundAlert>().SoundAlerted = true;
     }
     void Die()
     {

@@ -12,8 +12,8 @@ public class PMCmovement : MonoBehaviour
 
     [Header("Animation & Locomotion")]
     Animator animator;
-    public float walkSpeed = 2.5f;
-    public float sprintSpeed = 6.0f;
+    [SerializeField] float walkSpeed = 2.5f;
+    [SerializeField] float sprintSpeed = 6.0f;
 
     void Awake()
     {
@@ -60,28 +60,18 @@ public class PMCmovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
-    public Vector3 FindCover(Vector3 enemyPos)
+    public void LookAt(Vector3 target)
     {
-        for(int i = 0; i < 20; i++)
+        if (target == Vector3.zero) return;
+
+        Vector3 direction = (target - transform.position).normalized;
+        direction.y = 0; // Prevent the AI from tilting upwards/downwards
+
+        if (direction.sqrMagnitude > 0.01f)
         {
-            Vector3 randomPos = new Vector3(transform.position.x + Random.Range(-20, 20), transform.position.y , transform.position.z + Random.Range(-20, 20));
-
-            RaycastHit hit;
-            if(Physics.Raycast(randomPos + new Vector3(0, 50, 0), transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
-            {
-                randomPos = hit.point; 
-
-                if (Physics.Raycast(randomPos + Vector3.up, -(randomPos + Vector3.up - enemyPos), out hit, Mathf.Infinity)){ //we can hide?
-                    //Debug.DrawLine(randomPos, hit.point);
-                    print(enemyPos);
-                    if(!hit.collider.tag.Equals("ermacore faction"))
-                    {
-                        return randomPos;
-                    }
-                }
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
-        print("ZERO");
-        return Vector3.zero;
     }
+    
 }

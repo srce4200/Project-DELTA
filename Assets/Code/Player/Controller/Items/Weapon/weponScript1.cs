@@ -318,12 +318,15 @@ public class weponScript1 : Item
         muzzelFlash.Play();
 
         //might impact the game lag
-        Collider[] zombies = Physics.OverlapSphere(transform.position, 100f, enemyMask);
-        for(int i = 0; i < zombies.Length; i++)
+        Collider[] enemy = Physics.OverlapSphere(transform.position, 100f, enemyMask);
+        for(int i = 0; i < enemy.Length; i++)
         {
-            try { 
-                zombies[i].transform.root.GetComponent<SoundAlert>().SoundAlerted = true;
-            }catch(Exception e) { }
+            try {
+                enemy[i].transform.root.GetComponent<SoundAlert>().SoundAlerted = true;
+            }catch(Exception e) 
+            {//neds fix, but will do for now 
+                enemy[i].transform.root.GetComponent<PMCsquad>().Alert(transform.position);
+            }
         }
     }
 
