@@ -83,10 +83,8 @@ public class ChatControl : MonoBehaviour
     }
     void ControlsCheck()
     {
-        print("Checking enable disable thing)");
         if (currentlyChating || disableLook)
         {
-            print("Wriong");
             DisableAllMouseControls();
         }
         else

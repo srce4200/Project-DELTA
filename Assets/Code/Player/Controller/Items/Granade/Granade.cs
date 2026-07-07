@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Granade : MonoBehaviour
+public class Granade : Item
 {
     [SerializeField] string nadeName;
 
@@ -14,36 +14,22 @@ public class Granade : MonoBehaviour
 
     int currentGranades;
 
-    bool isReloading = false;
-    InventoryManager inventoryManager;
-
-    AudioSource soundSource;
-
-
-    PlayerMovement playerMove;
-    Camera mainCam;
-
     [Header("Animations")]
     [SerializeField] RuntimeAnimatorController nadeAnimations;
-    Animator handAnimations;
-    bool isSprinting;
 
-    PhotonView PV;
-    void Start()
+    public override void Start()
     {
+        base.Start();
+        
         currentGranades = 1;
         currentGranadesStored -= 1;
-        PV = GetComponent<PhotonView>();
-        playerMove = GetComponentInParent<PlayerMovement>();
-        mainCam = playerMove.transform.GetComponentInChildren<Camera>();
-        soundSource = GetComponent<AudioSource>();
     }
-    void OnEnable()
+    public override void OnEnable()
     {
-        inventoryManager = transform.root.GetComponent<InventoryManager>();
+        base.OnEnable();
         inventoryManager.weaponName.text = gameObject.name;
         inventoryManager.ammoDisplayList.gameObject.SetActive(false);
-        handAnimations = inventoryManager.handAnimations;
+        
         handAnimations.runtimeAnimatorController = nadeAnimations;
 
         isReloading = false;
@@ -56,30 +42,21 @@ public class Granade : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
+        if (PV == null || !PV.IsMine)
             return;
-        transform.root.GetComponent<ProceduralAim>().Aim(false, 8, 0, null);
+            
+        procAim.Aim(false, 8, 1, null);
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) && isReloading == false)
-        {
-            handAnimations.SetBool("isWalking", true);
-            isSprinting = Input.GetKey(KeyCode.LeftShift);
-            if (playerMove.currentStamina > 0.2f)
-            {
-                handAnimations.SetBool("isSprinting", isSprinting);
-            }
-            else
-            {
-                handAnimations.SetBool("isSprinting", false);
-            }
-        }
-        else
-            handAnimations.SetBool("isWalking", false);
+        Animations_movement();
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && isReloading == false && currentGranades == 1)
         {
             StartCoroutine(DelayShoot());
         }
+    }
+    public override void Animations_movement()
+    {
+        base.Animations_movement();
     }
 
     [PunRPC]
@@ -94,7 +71,7 @@ public class Granade : MonoBehaviour
         handAnimations.SetTrigger("shoot");
         currentGranades = 0;
         yield return new WaitForSeconds(0.5f);
-        gameObject.GetComponent<PhotonView>().RPC("ThrowGranade", RpcTarget.All);
+        PV.RPC("ThrowGranade", RpcTarget.All);
         
         inventoryManager.amauntText.SetText((currentGranades + currentGranadesStored).ToString());
 
@@ -120,5 +97,10 @@ public class Granade : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         isReloading = false;
+    }
+    public override void Rearm()
+    {
+        currentGranades = currentGranadesStored;
+        inventoryManager.amauntText.SetText((currentGranades + currentGranadesStored).ToString());
     }
 }

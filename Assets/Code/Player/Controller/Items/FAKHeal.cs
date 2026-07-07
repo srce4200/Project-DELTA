@@ -4,54 +4,47 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 
-public class FAKHeal : MonoBehaviour
+public class FAKHeal : Item
 {
     public int maxFakStored = 3;
-    [HideInInspector] public int currentFakStored;
+    int currentFakStored;
+    
     public float healingSpeed;
     bool isHealing = false;
     public float healAmaunt = 100f;
 
-    InventoryManager inventoryManager;
-    bool isSprinting;
-
     playerHealth myplayerHp;
-    Camera cam;
 
     [Header("Animations")]
     [SerializeField] RuntimeAnimatorController animator;
-    Animator handAnimations;
-
-    PhotonView PV;
+    
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
+        base.Start();
         myplayerHp = GetComponentInParent<playerHealth>();
-        cam = handAnimations.GetComponentInChildren<Camera>();
         currentFakStored = maxFakStored;
-        PV = GetComponent<PhotonView>();
     }
-    void OnEnable()
+    public override void OnEnable()
     {
-        inventoryManager = transform.root.GetComponent<InventoryManager>();
+        base.OnEnable();
+        
         inventoryManager.weaponName.text = gameObject.name;
         inventoryManager.ammoDisplayList.gameObject.SetActive(false);
         handAnimations = inventoryManager.handAnimations;
         handAnimations.runtimeAnimatorController = animator;
-
-        handAnimations.SetBool("isReloading", false);
-        handAnimations.SetBool("LowReady", false);
     }
     
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
+        if (PV == null || !PV.IsMine)
             return;
 
-        transform.root.GetComponent<ProceduralAim>().Aim(false, 8, 0, null);
+        //check if you can delete this, already handled in Item.OnEabled
+        procAim.Aim(false, 8, 0, null);
 
-        HandleAnimations();
+        Animations_movement();
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && myplayerHp.currentHealth < 100 && !isHealing && currentFakStored > 0)
         {
@@ -60,7 +53,7 @@ public class FAKHeal : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             RaycastHit hit;
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 5f))
+            if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit, 5f))
             {
                 if (hit.transform.tag == "ermacore faction")
                 {
@@ -84,7 +77,7 @@ public class FAKHeal : MonoBehaviour
         handAnimations.SetBool("isReloading", true);
         yield return new WaitForSeconds(healingSpeed);
         currentFakStored -= 1;
-
+        //try calling pv from here if you see this
         playerHp.pv.RPC("TakeDamage", RpcTarget.All, (double)(-healAmaunt)); // Call the TakeDamage method with a negative value to heal
 
         handAnimations.SetBool("isReloading", false);
@@ -93,17 +86,13 @@ public class FAKHeal : MonoBehaviour
 
     #region General
 
-    void HandleAnimations()
-    { 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
-        {
-            handAnimations.SetBool("isWalking", true);
-            isSprinting = Input.GetKey(KeyCode.LeftShift);
-            handAnimations.SetBool("isSprinting", isSprinting);
-        }
-        else
-            handAnimations.SetBool("isWalking", false);
-
-    } 
+    public override void Animations_movement()
+    {
+        base.Animations_movement();
+    }
+    public override void Rearm()
+    {
+        currentFakStored = maxFakStored;
+    }
     #endregion
 }

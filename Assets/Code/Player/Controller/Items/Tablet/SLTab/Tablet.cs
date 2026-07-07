@@ -6,28 +6,14 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun.UtilityScripts;
 
-public class Tablet : MonoBehaviour
+public class Tablet : Item
 {
-    [Header("Zoom In")]
-    [SerializeField] float zoomRatio;
-    float startFov;
-    float maxFov;
-    [SerializeField] float lerpTime;
-
     [Header("Animations")]
     public RuntimeAnimatorController animator;
     
-    
-    Camera mainCam;
     ChatControl chCont;
-    PlayerMovement playerLook;
-    Animator handAnimations;
-    InventoryManager inventoryManager;
-    PhotonView PV;
 
     bool zoomedIn;
-    bool isSprinting;
-
 
     [Header("F1")]
     [SerializeField] TextMeshProUGUI mapNameText;
@@ -49,70 +35,60 @@ public class Tablet : MonoBehaviour
     SupportsMenu supportMain;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
-        playerLook = GetComponentInParent<PlayerMovement>();
-        mainCam = playerLook.transform.GetComponentInChildren<Camera>();
-        chCont = playerLook.GetComponent<ChatControl>();
+        base.Start();
+        
+        chCont = playerMove.GetComponent<ChatControl>();
         mapInfo = MapInfo.Instance;
 
         supportMain = mapInfo.GetComponent<SupportsMenu>();
         airdropSupports = supportMain.avaibleSupports;
         Setup();
-
-        startFov = 80;
-        maxFov = startFov / zoomRatio;
     }
 
-    void OnEnable()
+    public override void OnEnable()
     {
-        inventoryManager = transform.root.GetComponent<InventoryManager>();
+        base.OnEnable();
+        
         inventoryManager.weaponName.text = gameObject.name;
         inventoryManager.ammoDisplayList.gameObject.SetActive(false);
-        handAnimations = inventoryManager.handAnimations;
+    
         handAnimations.runtimeAnimatorController = animator;
         handAnimations.SetBool("isReloading", false);
         handAnimations.SetBool("LowReady", false);
-
-        if(PV == null) //need get pv before start, otherwise error mp?
-            PV = GetComponent<PhotonView>();
-        if(!PV.IsMine)
-            return;
-
-        transform.root.GetComponent<ProceduralAim>().Aim(false, 8, 0, null);
+        
+        procAim.Aim(false, 8, 0, null);
         zoomedIn = false;
     }
-    void OnDisable()
+    public override void OnDisable()
     {
-        if (!PV.IsMine)
+        if (PV == null || !PV.IsMine)
             return;
         ShutDown();
     }
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
+        if (PV == null || !PV.IsMine)
             return;
 
-        HandleAnimations();
+        Animations_movement();
         ZoomIn();
     }
 
     #region General
-
-    void HandleAnimations()
+    public override void Animations_movement()
     {
-        
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        if(zoomedIn)
         {
-            handAnimations.SetBool("isWalking", true);
-            isSprinting = Input.GetKey(KeyCode.LeftShift);
-            handAnimations.SetBool("isSprinting", isSprinting);
-        }
-        else
             handAnimations.SetBool("isWalking", false);
-
+            return;
+        }
+        
+        base.Animations_movement();
     }
+
     void ZoomIn()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1)) 
@@ -130,11 +106,11 @@ public class Tablet : MonoBehaviour
 
         if (zoomedIn)
         {
-            transform.root.GetComponent<ProceduralAim>().Aim(true, 8, 2, null);
+            procAim.Aim(true, 8, 2, null);
         }
         else
         {
-            transform.root.GetComponent<ProceduralAim>().Aim(false, 8, 0, null);
+            procAim.Aim(false, 8, 0, null);
         }
         
     }
@@ -186,7 +162,7 @@ public class Tablet : MonoBehaviour
         StartCoroutine(CoolDown());
         if(supportMain.currentCp >= airdropSupports[supportType].supportPrice)
         {
-            supportMain.CallSupport(airdropSupports[supportType].supportsPrefab, airdropSupports[supportType].supportPrice, playerLook.transform.position);
+            supportMain.CallSupport(airdropSupports[supportType].supportsPrefab, airdropSupports[supportType].supportPrice, playerMove.transform.position);
         }        
     }
     IEnumerator CoolDown()

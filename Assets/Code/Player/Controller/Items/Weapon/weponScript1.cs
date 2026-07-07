@@ -23,7 +23,6 @@ public class weponScript1 : Item
 
     [Header("Aiming")]
     public Scope scope;
-    ProceduralAim procAim;    
     float defaultSensitivty;
     bool isAiming;
 
@@ -88,7 +87,7 @@ public class weponScript1 : Item
     {
         base.OnEnable();
 
-        procAim = transform.root.GetComponent<ProceduralAim>();
+        
         amauntText.gameObject.SetActive(false);
         ammoDisplayList.gameObject.SetActive(true);
 
@@ -101,7 +100,7 @@ public class weponScript1 : Item
 
     private void Update()
     {
-        if (!PV.IsMine)
+        if (PV == null || !PV.IsMine)
             return;
 
         Animations_movement();
@@ -398,7 +397,7 @@ public class weponScript1 : Item
     {
         ammoDisplayList.GetChild(magList.Count - 1).GetComponentInChildren<Slider>().value = currentAmmo;
     }
-    public void Rearm()
+    public override void Rearm()
     {
         magList.Clear();
         for (int i = 0; i < maxMagsStored; i++)

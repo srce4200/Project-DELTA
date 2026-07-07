@@ -6,78 +6,55 @@ using UnityEngine.UI;
 using UnityEngine.LowLevel;
 using TMPro;
 
-public class Map : MonoBehaviour
+public class Map : Item
 {
-    InventoryManager inventoryManager;
-
-    [Header("Zoom In")]
-    [SerializeField] float zoomRatio;
-    float startFov;
-    float maxFov;
-    [SerializeField] float lerpTime;
-    Camera mainCam;
-
-    PlayerMovement playerLook;
-
     [Header("Animations")]
     public RuntimeAnimatorController animator;
-    Animator handAnimations;
+    
     bool zoomedIn;
-    bool isSprinting;
-
-    PhotonView PV;
     ChatControl controls;
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
-        PV = GetComponent<PhotonView>();
-        playerLook = GetComponentInParent<PlayerMovement>();
-        mainCam = playerLook.transform.GetComponentInChildren<Camera>();
+        base.Start();
         controls = transform.root.GetComponent<ChatControl>();
-
-        startFov = 80;
-        maxFov = startFov / zoomRatio;
     }
 
-    void OnEnable()
+    public override void OnEnable()
     {
-        inventoryManager = transform.root.GetComponent<InventoryManager>();
+        base.OnEnable();
+        
         inventoryManager.weaponName.text = gameObject.name;
         inventoryManager.ammoDisplayList.gameObject.SetActive(false);
-        handAnimations = inventoryManager.handAnimations;
         handAnimations.runtimeAnimatorController = animator;
 
-        handAnimations.SetBool("isReloading", false);
-        handAnimations.SetBool("LowReady", false);
-        transform.root.GetComponent<ProceduralAim>().Aim(false, 8, 0, null);
+        procAim.Aim(false, 8, 1, null);
     }
-    private void OnDisable()
+    public override void OnDisable()
     {
         ShutDown();
     }
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
+        if (PV ==null || !PV.IsMine)
             return;
         
-        transform.root.GetComponent<ProceduralAim>().Aim(false, 8, 0, null);
-        HandleAnimations();
+        Animations_movement();
         ZoomIn();
     }
 
     #region General
 
-    void HandleAnimations()
+    public override void Animations_movement()
     {
-        if(zoomedIn == true)
-            handAnimations.SetBool("isWalking", false);
-        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        if(zoomedIn)
         {
-            handAnimations.SetBool("isWalking", true);
-            isSprinting = Input.GetKey(KeyCode.LeftShift);
-            handAnimations.SetBool("isSprinting", isSprinting);
+            handAnimations.SetBool("isWalking", false);
+            return;
         }
+        
+        base.Animations_movement();
     }
 
     void ZoomIn()
@@ -96,13 +73,11 @@ public class Map : MonoBehaviour
         }
         if (zoomedIn)
         {
-            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, maxFov, lerpTime);
-            controls.LockMovement(true);
+            procAim.Aim(true, 8, 2, null);
         }
         else
         {
-            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, startFov, lerpTime);
-            controls.LockMovement(true);
+            procAim.Aim(false, 8, 1, null);
         }
     }
 
@@ -113,7 +88,6 @@ public class Map : MonoBehaviour
     void StartUp()
     {
         controls.LockMovement(true);
-        mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, maxFov, lerpTime);
     }
 
     void ShutDown()

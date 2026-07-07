@@ -14,6 +14,8 @@ public class Item : MonoBehaviour
     [SerializeField][HideInInspector] protected Animator handAnimations;
     [SerializeField][HideInInspector] protected AudioSource soundSource;
     [SerializeField][HideInInspector] protected bool isReloading;
+    [SerializeField][HideInInspector] protected ProceduralAim procAim;
+    
     public virtual void Start()
     {
         playerMove = GetComponentInParent<PlayerMovement>();
@@ -28,16 +30,17 @@ public class Item : MonoBehaviour
     public virtual void OnEnable()
     {
         inventoryManager = transform.root.GetComponent<InventoryManager>();
+        handAnimations = inventoryManager.handAnimations;
         handAnimations.SetBool("isReloading", false);
         handAnimations.SetBool("LowReady", false);
+        procAim = transform.root.GetComponent<ProceduralAim>();
     }
     public virtual void OnDisable()
     {
-        handAnimations = inventoryManager.handAnimations;
+        //handAnimations = inventoryManager.handAnimations;
     }
     public virtual void Animations_movement()
     {
-        //animations
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) && isReloading == false)
         {
             handAnimations.SetBool("isWalking", true);
@@ -53,5 +56,9 @@ public class Item : MonoBehaviour
         }
         else
             handAnimations.SetBool("isWalking", false);
+    }
+    public virtual void Rearm()
+    {
+        
     }
 }

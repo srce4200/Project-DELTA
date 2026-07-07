@@ -23,7 +23,7 @@ public class ResupplyBox : Interactable
         weponSwitch gunsScript = player.GetComponentInChildren<weponSwitch>();
         if (primaryAmmo)
         {
-            weponScript1 gunsScriptPrimary = gunsScript.primaryHolder.GetComponentInChildren<weponScript1>();
+            Item gunsScriptPrimary = gunsScript.primaryHolder.GetComponentInChildren<Item>();
             if (gunsScriptPrimary != null) 
             {
                 gunsScriptPrimary.Rearm();
@@ -32,7 +32,7 @@ public class ResupplyBox : Interactable
         }
         if (secondaryAmmo)
         {
-            weponScript1 gunsScriptSecondary = gunsScript.secondaryHolder.GetComponentInChildren<weponScript1>();
+            Item gunsScriptSecondary = gunsScript.secondaryHolder.GetComponentInChildren<Item>();
             if (gunsScriptSecondary != null) 
             {
                 gunsScriptSecondary.Rearm();
@@ -40,7 +40,7 @@ public class ResupplyBox : Interactable
             }
         }
 
-        gunsScript.healHolder.GetComponentInChildren<FAKHeal>().currentFakStored = gunsScript.healHolder.GetComponentInChildren<FAKHeal>().maxFakStored;
+        gunsScript.healHolder.GetComponentInChildren<Item>().Rearm();
 
         _pv.RPC(nameof(UseSupplies), RpcTarget.AllBuffered, usage);
     }
