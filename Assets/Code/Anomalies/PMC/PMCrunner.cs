@@ -22,11 +22,8 @@ public class PMCrunner : MonoBehaviour
     Vector3 currentWaypoint;
 
     // Position tracking
-    
-    bool hasFlanked = false;
-    bool takenCover = false;
-
-    bool waypointInProgress;
+    Waypoint assignedWaypoint;
+    Coroutine moveCoroutine;
 
     void Start()
     {
@@ -38,7 +35,6 @@ public class PMCrunner : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-
         if (curState == AiState.combat && currentTarget != null) //we see target, look at it
         {
             _Movement.LookAt(currentTarget);
@@ -47,18 +43,7 @@ public class PMCrunner : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
-        //if (target != null && currentTarget == null)
-        //{
-        //    SetDestination(_Movement.FindCover(target.position));
-        //}
-
         currentTarget = target;
-
-        if (currentTarget != null)
-        {
-            takenCover = false;
-            hasFlanked = false;
-        }
     }
 
     
@@ -66,6 +51,8 @@ public class PMCrunner : MonoBehaviour
     {
         curState = newState;
         StopAllCoroutines();
+        assignedWaypoint = null;
+        moveCoroutine = null;
 
         switch (curState)
         {
@@ -77,7 +64,28 @@ public class PMCrunner : MonoBehaviour
                 break;
             case AiState.combat:
                 //StartCoroutine(ScanEnvironment());
+                headPivot.localRotation = Quaternion.identity;
                 StartCoroutine(CombatBehaviorLoop());
+                break;
+        }
+    }
+    public void AssignWaypoint(Waypoint wp)
+    {
+        if (assignedWaypoint != null) return;
+        assignedWaypoint = wp;
+        switch (assignedWaypoint.wpType)
+        {
+            case WaypointType.Move:
+                SetDestination(assignedWaypoint.wpTargetPos);
+                break;
+            case WaypointType.Flank:
+                FlankRoute(assignedWaypoint.wpTargetPos);
+                break;
+            case WaypointType.TakeCover:
+                SetDestination(FindCover(assignedWaypoint.wpTargetPos));
+                break;
+            case WaypointType.PatrolArea:
+                SetDestination(AreaPatrol(assignedWaypoint.wpTargetPos));
                 break;
         }
     }
@@ -97,9 +105,6 @@ public class PMCrunner : MonoBehaviour
                     if (hit.transform == currentTarget)
                     {;
                         _Weapon.Semi(currentTarget);
-
-                        //if(!takenCover)
-                        //    TriggerFindCover();
                     }
                     else 
                     {
@@ -112,19 +117,8 @@ public class PMCrunner : MonoBehaviour
         }
     }
 
-    public void AssignWaypoint()
-    {
-
-    }
-    public void TriggerFlankRoute(Vector3 targetPos)
-    {
-        if(!hasFlanked)
-            FlankRoute(targetPos);
-    }
     void FlankRoute(Vector3 targetPos)
     {
-        hasFlanked = true;
-
         Vector3 dirToTarget = (targetPos - transform.position).normalized;
         // Generate a perpendicular offset vector relative to the target line to move around the building
         Vector3 leftOrRight = Random.value > 0.5f ? Vector3.Cross(dirToTarget, Vector3.up) : -Vector3.Cross(dirToTarget, Vector3.up);
@@ -137,21 +131,19 @@ public class PMCrunner : MonoBehaviour
             SetDestination(navHit.position);
         }
     }
-    
-    public void TriggerAreaPatrol(Vector3 targetPos, float patrolTime)
-    {
-        
-    }
-    void AreaPatrol(Vector3 targetPos)
-    {
 
-    }
-    public void TriggerFindCover(Vector3 enemyPos)
+    Vector3 AreaPatrol(Vector3 targetPos)
     {
-        if (!takenCover)
+        for (int i = 0; i < 10; i++)
         {
-            SetDestination(FindCover(enemyPos));
+            Vector3 randomPoint = targetPos + Random.insideUnitSphere * 15;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, 7f, NavMesh.AllAreas))
+            {
+                return(hit.position);
+            }
         }
+        return Vector3.zero;
     }
     Vector3 FindCover(Vector3 enemyPos)
     {
@@ -175,7 +167,6 @@ public class PMCrunner : MonoBehaviour
                 }
             }
         }
-        print("ZERO");
         return Vector3.zero;
     }
     
@@ -185,7 +176,7 @@ public class PMCrunner : MonoBehaviour
     {
         StopCoroutine(MoveToDestination());
         currentWaypoint = pos;
-        StartCoroutine(MoveToDestination());
+        moveCoroutine = StartCoroutine(MoveToDestination());
     }
 
     IEnumerator MoveToDestination()
@@ -198,6 +189,10 @@ public class PMCrunner : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         _Movement.StopMoving();
+
+        if (assignedWaypoint != null)
+            yield return new WaitForSeconds(assignedWaypoint.waitDuration);
+        assignedWaypoint = null;
     }
     #endregion
 
@@ -253,10 +248,6 @@ public class PMCrunner : MonoBehaviour
             headPivot.localRotation = Quaternion.Euler(0, angle, 0);
             yield return null;
         }
-    }
-    private void OnDrawGizmos()
-    {
-
     }
     private void OnTriggerEnter(Collider other)
     {

@@ -4,13 +4,20 @@ using Photon.Pun;
 using System;
 using System.Collections;
 
-public enum WaypointType {Move, Flank, PatrolArea}
+public enum WaypointType {Move, Flank, TakeCover,  PatrolArea}
 
 [Serializable]
 public class Waypoint
 {
     public WaypointType wpType;
-    public Vector3 wpPos;
+    public Vector3 wpTargetPos;
+    public float waitDuration;
+    public Waypoint(WaypointType wpType, Vector3 wpTargetPos, float waitDuration)
+    {
+        this.wpType = wpType;
+        this.wpTargetPos = wpTargetPos;
+        this.waitDuration = waitDuration;
+    }
 }
 
 public class PMCsquad : MonoBehaviour
@@ -20,7 +27,7 @@ public class PMCsquad : MonoBehaviour
     List<Waypoint> wps = new List<Waypoint>();
     Vector3 lastTargetPos;
     enum LastPosState {safe, dead, searchable, active }
-    LastPosState lastPosState = LastPosState.dead;
+    LastPosState lastPosState = LastPosState.safe;
     bool lastPosDowngrading;
     
     void Update()
@@ -48,19 +55,19 @@ public class PMCsquad : MonoBehaviour
             p.SetTarget(assignedTarget);
             
             if (p.curState != AiState.combat) //if not yet in combat, do combat
-                {
+            {
                     p.SwitchState(AiState.combat);
                     //eyes on, take cover, engage,
                     //might not be this so maybe need run help
-                    p.TriggerFindCover(assignedTarget.position);
-                }
+                p.AssignWaypoint(new Waypoint(WaypointType.TakeCover, assignedTarget.position, 5));
+            }
             
             StopCoroutine(StartLastPosDegredation());
             lastPosDowngrading = false;
         }
         else
         {
-            if(!lastPosDowngrading)
+            if(lastPosState != LastPosState.safe && !lastPosDowngrading)
             {
                 lastPosDowngrading = true;
                 StartCoroutine(StartLastPosDegredation());
@@ -69,13 +76,15 @@ public class PMCsquad : MonoBehaviour
             switch(lastPosState) //need reduction time outs
             {
                 case LastPosState.active:
-                    p.TriggerFlankRoute(lastTargetPos);
+                    p.AssignWaypoint(new Waypoint(WaypointType.Flank, lastTargetPos, 3));
                     p.SetTarget(null);
                     break;
                 case LastPosState.searchable:
                     p.SwitchState(AiState.aware);
+                    p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 3));
                     break;
                 case LastPosState.dead:
+                    p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 7));
                     break;
                 case LastPosState.safe:
                     p.SwitchState(AiState.safe);

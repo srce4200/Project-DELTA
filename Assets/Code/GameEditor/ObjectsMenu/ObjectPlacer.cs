@@ -18,8 +18,8 @@ public class ObjectPlacer : MonoBehaviour
     public Camera cam;
 
 
-    [HideInInspector]public List<MissionObject> objects = new List<MissionObject>();
-    [HideInInspector]public List<MissionObject> photonSpawnObjects = new List<MissionObject>();
+    public List<MissionObject> objects = new List<MissionObject>();
+    public List<MissionObject> photonSpawnObjects = new List<MissionObject>();
     public static ObjectPlacer instance;
     [Space]
     [SerializeField] LayerMask placableLayer;

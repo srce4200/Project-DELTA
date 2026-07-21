@@ -23,6 +23,9 @@ public class CustomObjectSettings : MonoBehaviour
         {
             parameterValues[i] = p[i];
         }
+
+
+        SettingsSave(p);
     }
     public virtual void SettingsSave(parameter[] entry)
     {

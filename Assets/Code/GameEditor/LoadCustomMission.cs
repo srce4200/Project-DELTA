@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -30,6 +31,12 @@ public class LoadCustomMission : MonoBehaviour
         foreach (MissionObject missionObject in savedMission.photonSpawn)
         {
             //spawn with photonnetworking
+            GameObject ob = PhotonNetwork.InstantiateRoomObject(missionObject.pathToObject, missionObject.position, missionObject.rotation);
+            if (ob.GetComponent<CustomObjectSettings>())
+            {
+                ob.GetComponent<CustomObjectSettings>().SetSettings(missionObject.objectsArtributes.ToArray(), missionObject.syncedToId);
+            }
+            ob.GetComponent<ObjectModuleInfoHolder>().objectID = missionObject.id;
         }
     }
 }
