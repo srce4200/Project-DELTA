@@ -19,20 +19,23 @@ public class PMCweapon : MonoBehaviour
     AudioSource soundSource; 
     [SerializeField] Transform gunBarell; 
     [SerializeField] ParticleSystem muzzelFlash; 
-    Animator handAnimations; 
-    bool isSprinting;
+    Animator handAnimations;
      
     PhotonView PV;  
 
     ////----------------------START----------------------------
     void Start()
-    { 
+    {
         soundSource = GetComponent<AudioSource>(); 
         PV = GetComponent<PhotonView>();
         currentAmmo = ammoInMag; 
         handAnimations = GetComponent<Animator>();
         handAnimations.SetBool("isReloading", false);
     }  
+    public void SetSprintAnim(bool sprint)
+    {
+        handAnimations.SetBool("isSprinting", sprint);
+    }
     public void FullAuto(Transform target)
     { 
         if (Time.time >= nextTimeToFire && currentAmmo > 0 && !isReloading)

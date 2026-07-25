@@ -9,12 +9,12 @@ public class PMCmovement : MonoBehaviour
 {
     NavMeshAgent agent;
     [SerializeField] float rotationSpeed = 8f;
-
+    [SerializeField] PMCweapon pmcWepon;
     [Header("Animation & Locomotion")]
     Animator animator;
     [SerializeField] float walkSpeed = 2.5f;
     [SerializeField] float sprintSpeed = 6.0f;
-
+    float currentSpeed;
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -23,9 +23,11 @@ public class PMCmovement : MonoBehaviour
 
     void Update()
     {
-        float currentSpeed = agent.velocity.magnitude;
+        currentSpeed = agent.velocity.magnitude;
         animator.SetBool("isWalking", currentSpeed > 0.3f);
-        animator.SetBool("isSprinting", currentSpeed > walkSpeed + 0.5f);
+        bool sprint = currentSpeed > walkSpeed + 0.5f;
+        animator.SetBool("isSprinting", sprint);
+        pmcWepon.SetSprintAnim(sprint);
     }
 
     // Notice we added a "sprint" boolean to dictate locomotion type

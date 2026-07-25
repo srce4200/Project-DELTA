@@ -2750,6 +2750,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 8
+  pmcWepon: {fileID: 3602609417768610424}
   walkSpeed: 4
   sprintSpeed: 8
 --- !u!114 &5882382926487787570
