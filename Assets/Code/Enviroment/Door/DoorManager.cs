@@ -16,11 +16,7 @@ public class DoorManager : MonoBehaviour
     [ContextMenu("Find and Sort All Doors")]
     private void FindAllDoorsInEditor()
     {
-        doors = FindObjectsByType<DoorInteractible>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-            .OrderBy(d => d.transform.position.x)
-            .ThenBy(d => d.transform.position.y)
-            .ThenBy(d => d.transform.position.z)
-            .ToArray();
+        doors = FindObjectsByType<DoorInteractible>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToArray();
     }
     public void ChangeDoorState(DoorInteractible dr, bool isOpen)
     {
