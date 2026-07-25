@@ -1,6 +1,8 @@
 using Photon.Pun;
 using System;
 using System.Linq;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class DoorManager : MonoBehaviour
@@ -16,7 +18,11 @@ public class DoorManager : MonoBehaviour
     [ContextMenu("Find and Sort All Doors")]
     private void FindAllDoorsInEditor()
     {
-        doors = FindObjectsByType<DoorInteractible>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToArray();
+        doors = FindObjectsByType<DoorInteractible>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToArray(); 
+        EditorUtility.SetDirty(this);
+
+        // 4. Mark the active scene dirty so Ctrl+S actually writes to disk
+        EditorSceneManager.MarkSceneDirty(gameObject.scene);
     }
     public void ChangeDoorState(DoorInteractible dr, bool isOpen)
     {

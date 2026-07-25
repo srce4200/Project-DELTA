@@ -224,6 +224,10 @@ public class PMCrunner : MonoBehaviour
                     {
                         return target;
                     }
+                    else if (hit.transform.GetComponent<DoorInteractible>())
+                    {
+                        hit.transform.GetComponent<DoorInteractible>().OpenClose(true);
+                    }
                 }
             }
         }
