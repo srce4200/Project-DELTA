@@ -10,7 +10,7 @@ public class DoorInteractible : Interactable
     }
     private void Start()
     {
-        GetComponent<NavMeshLink>().activated = currentlyOpen;
+        //GetComponent<NavMeshLink>().activated = currentlyOpen; //try disable so navmesh calculate path
     }
     public void OpenClose(bool isOpen)
     {
@@ -18,7 +18,7 @@ public class DoorInteractible : Interactable
         {
             GetComponent<Animator>().SetTrigger("Action");
             currentlyOpen = !currentlyOpen;
-            GetComponent<NavMeshLink>().activated = currentlyOpen;
+            //GetComponent<NavMeshLink>().activated = currentlyOpen;
         }
     }
 }
