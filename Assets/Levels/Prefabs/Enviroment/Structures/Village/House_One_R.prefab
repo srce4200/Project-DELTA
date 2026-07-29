@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0a072047ec1215f4c876c0866e289d56, type: 2}
+    - target: {fileID: 4871972791779040171, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_TagString
+      value: interactable
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424516626890032667, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_TagString
+      value: interactable
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290450713732711172, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_TagString
+      value: interactable
+      objectReference: {fileID: 0}
     - target: {fileID: 6474901264312405164, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
       propertyPath: m_Name
       value: House_One_R

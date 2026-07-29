@@ -20,15 +20,17 @@ public class PMCrunner : MonoBehaviour
     [SerializeField] Transform headPivot;
     Transform currentTarget;
     Vector3 currentWaypoint;
-
     // Position tracking
     Waypoint assignedWaypoint;
     Coroutine moveCoroutine;
+
+    [SerializeField] private LayerMask visionMask;
 
     void Start()
     {
         _pv = GetComponent<PhotonView>();
         _Movement = GetComponent<PMCmovement>();
+        enemyColliders = MapInfo.Instance.activePlayers; //it should bind to active playerrs list
     }
 
     void Update()
@@ -200,6 +202,8 @@ public class PMCrunner : MonoBehaviour
 
     public Transform LookForTargetsInFOV()
     {
+        if ((Time.frameCount + gameObject.GetInstanceID()) % 5 != 0) return null;//runs every fifth frame, not on every object
+
         for (int i = enemyColliders.Count - 1; i >= 0; i--)
         {
             if (enemyColliders[i] == null)
@@ -218,13 +222,13 @@ public class PMCrunner : MonoBehaviour
             if (angleToTarget < 60)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(headPivot.position, directionToTarget, out hit, 250))
+                if (Physics.Raycast(headPivot.position, directionToTarget, out hit, 250, visionMask))
                 {
                     if (hit.transform.CompareTag(enemyTag))
                     {
                         return target;
                     }
-                    else if (hit.transform.GetComponent<DoorInteractible>())
+                    else if (hit.transform.CompareTag("interactable"))
                     {
                         hit.transform.GetComponent<DoorInteractible>().OpenClose(true);
                     }
@@ -252,21 +256,6 @@ public class PMCrunner : MonoBehaviour
             headPivot.localRotation = Quaternion.Euler(0, angle, 0);
             yield return null;
         }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(enemyTag))
-        {
-            if (!enemyColliders.Contains(other.transform))
-            {
-                enemyColliders.Add(other.transform);
-            }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag(enemyTag)) 
-            enemyColliders.Remove(other.transform);
     }
     #endregion
 }

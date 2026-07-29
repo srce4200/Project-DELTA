@@ -20,6 +20,8 @@ public class MapInfo : MonoBehaviour
 
     [Header("Active Tasks")]
     public List<Task> tasks;
+
+    [HideInInspector]public List<Transform> activePlayers = new List<Transform>();
     private void Awake()
     {
         adminPanelDefault.SetActive(true);
@@ -70,5 +72,14 @@ public class MapInfo : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         PhotonNetwork.LoadLevel(0);
+    }
+
+    public void AddAlivePlayer(Transform tr)
+    {
+        activePlayers.Add(tr);
+    }
+    public void RemoveAlivePlayer(Transform tr)
+    {
+        activePlayers.Remove(tr);
     }
 }

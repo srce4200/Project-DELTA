@@ -7734,6 +7734,7 @@ GameObject:
   - component: {fileID: 6160554063980730772}
   - component: {fileID: 6985892906533884380}
   - component: {fileID: 6680193234204157321}
+  - component: {fileID: 7713564377384260821}
   m_Layer: 9
   m_Name: DefaultController
   m_TagString: ermacore faction
@@ -8247,6 +8248,18 @@ MonoBehaviour:
   ammoDisplayList: {fileID: 9199269891792873967}
   ammoDisplayMagPrefab: {fileID: 4294920586714506060, guid: 775281e02464b994e92d63d529f19db1, type: 3}
   handAnimations: {fileID: 7100737054821436671}
+--- !u!114 &7713564377384260821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7063245629663981894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a9a8f3850d26c5499e19bb91fa64c62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7145548747809013951
 GameObject:
   m_ObjectHideFlags: 0

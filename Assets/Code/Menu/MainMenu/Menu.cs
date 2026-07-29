@@ -8,7 +8,7 @@ public class Menu : MonoBehaviour
     public bool open;
     void Start()
     {
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
     }
     public void Open()
     {
