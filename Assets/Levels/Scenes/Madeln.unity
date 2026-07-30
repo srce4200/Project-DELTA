@@ -20,19 +20,19 @@ RenderSettings:
   m_FogDensity: 0.009
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
+  m_AmbientSkyColor: {r: 0.25133097, g: 0.254717, b: 0.21747063, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 0.4
-  m_AmbientMode: 3
-  m_SubtractiveShadowColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_AmbientMode: 0
+  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
+  m_SkyboxMaterial: {fileID: 2100000, guid: cb879a436a7692845a0f2ed7883aa098, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 0
+  m_DefaultReflectionMode: 1
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
@@ -36282,7 +36282,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: d1522321b6b50f5498808791db9dcaed, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -58898,7 +58898,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeSpeed: 2
   dayDuration: 86400
+  currentTime: 33200
   sun: {fileID: 734228144}
+  skyboxMaterial: {fileID: 2100000, guid: cb879a436a7692845a0f2ed7883aa098, type: 2}
   intensityCurve:
     serializedVersion: 2
     m_Curve:
@@ -58921,8 +58923,8 @@ MonoBehaviour:
       inWeight: 0.047185905
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.4528187
-      value: 1.4873639
+      time: 0.4367054
+      value: 0.99951375
       inSlope: -0.105352014
       outSlope: -0.105352014
       tangentMode: 0
@@ -58950,7 +58952,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  currentTime: 33200
+  dayHorizonColor: {r: 0.8, g: 0.9, b: 1, a: 1}
+  nightHorizonColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1001 &734319871
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138268,8 +138271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 196568fd49c3e444dbe87c0764d2b902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  boostSpeed: 50
+  speed: 30
+  boostSpeed: 100
   mouseSensitivity: 10
   spectatorCam: {fileID: 1519364881}
 --- !u!1001 &1536137131
@@ -165233,7 +165236,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: dc7b5e1a7df18ec44b1865e6c358ad47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

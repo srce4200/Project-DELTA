@@ -221,12 +221,12 @@ public class ObjectPlacer : MonoBehaviour
         if (missionObject.photonSpawn)
         {
             photonSpawnObjects.Add(missionObject);
-            //Debug.Log(missionObject.pathToObject);
+            Debug.Log(missionObject.pathToObject);
         }
         else
         {
             objects.Add(missionObject);
-            //Debug.Log(missionObject.pathToObject);
+            Debug.Log(missionObject.pathToObject);
         }
 
         //---------    add editor only stuff   ---------//

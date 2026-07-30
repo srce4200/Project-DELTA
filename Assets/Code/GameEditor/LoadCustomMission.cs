@@ -30,6 +30,7 @@ public class LoadCustomMission : MonoBehaviour
         }
         foreach (MissionObject missionObject in savedMission.photonSpawn)
         {
+            print("Loading netwroking single objects");
             //spawn with photonnetworking
             GameObject ob = PhotonNetwork.InstantiateRoomObject(missionObject.pathToObject, missionObject.position, missionObject.rotation);
             if (ob.GetComponent<CustomObjectSettings>())

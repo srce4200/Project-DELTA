@@ -20,12 +20,12 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.31612054, g: 0.3207547, b: 0.30411178, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
-  m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.380785, g: 0.3878252, b: 0.4056604, a: 1}
+  m_AmbientIntensity: 0.53
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: b028ca26d06b2ef4fa1a51cd55473aa3, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 1530442738}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -40327,7 +40327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b182942f6269bb49aa29173179eea11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuName: 
+  menuName: ObjectsHolder
   open: 0
 --- !u!224 &140026022972863774
 RectTransform:
@@ -41318,7 +41318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b182942f6269bb49aa29173179eea11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuName: 
+  menuName: GreenHolder
   open: 0
 --- !u!1 &2448379738533439026
 GameObject:
@@ -41374,7 +41374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &2645039610807441971
 GameObject:
   m_ObjectHideFlags: 0
@@ -41426,7 +41426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b182942f6269bb49aa29173179eea11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuName: 
+  menuName: BlueHolder
   open: 0
 --- !u!224 &2857305935462095635
 RectTransform:
@@ -42082,7 +42082,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4449356728090382113
 RectTransform:
   m_ObjectHideFlags: 0
@@ -43185,7 +43185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4851789269148911827
 RectTransform:
   m_ObjectHideFlags: 0
@@ -45247,7 +45247,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 3506901167235363067}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
@@ -45259,7 +45259,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 4059922755759571444}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
@@ -45271,7 +45271,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 8770231907980054918}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
@@ -45378,7 +45378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b182942f6269bb49aa29173179eea11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuName: 
+  menuName: RedHolder
   open: 0
 --- !u!224 &6664416259548773037
 RectTransform:

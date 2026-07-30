@@ -158,7 +158,8 @@ public class SaveLoadEditor : MonoBehaviour
         }
         foreach (MissionObject missionObject in savedMission.photonSpawn)
         {
-            //spawn with photonnetworking
+            //spawn with photonnetworking->still works either way?
+            ObjectPlacer.instance.PlaceObjectEditorLoad(missionObject);
         }
     }
     #endregion
