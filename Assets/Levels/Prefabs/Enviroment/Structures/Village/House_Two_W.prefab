@@ -247,8 +247,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SerializedVersion: 1
   m_AgentTypeID: 0
-  m_StartPoint: {x: -1.1607933, y: -1.9929736, z: 0.7715435}
-  m_EndPoint: {x: 1.2535973, y: -1.9690754, z: 1.232132}
+  m_StartPoint: {x: -1.1607933, y: -1.6913875, z: 0.7715454}
+  m_EndPoint: {x: 1.2535973, y: -1.7168957, z: 1.232132}
   m_StartTransform: {fileID: 0}
   m_EndTransform: {fileID: 0}
   m_Activated: 1
@@ -721,8 +721,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SerializedVersion: 1
   m_AgentTypeID: 0
-  m_StartPoint: {x: -1.1607933, y: -1.9929736, z: 0.7715435}
-  m_EndPoint: {x: 1.2535973, y: -1.9690754, z: 1.232132}
+  m_StartPoint: {x: -1.1607922, y: -1.5847832, z: 0.77154297}
+  m_EndPoint: {x: 1.253598, y: -1.7645557, z: 1.2321317}
   m_StartTransform: {fileID: 0}
   m_EndTransform: {fileID: 0}
   m_Activated: 1
@@ -925,8 +925,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SerializedVersion: 1
   m_AgentTypeID: 0
-  m_StartPoint: {x: -1.1607933, y: -1.9929736, z: 0.7715435}
-  m_EndPoint: {x: 1.2535973, y: -1.9690754, z: 1.232132}
+  m_StartPoint: {x: -1.160792, y: -1.6466103, z: 0.77154344}
+  m_EndPoint: {x: 1.2535982, y: -1.7432432, z: 1.232132}
   m_StartTransform: {fileID: 0}
   m_EndTransform: {fileID: 0}
   m_Activated: 1
@@ -1042,8 +1042,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SerializedVersion: 1
   m_AgentTypeID: 0
-  m_StartPoint: {x: -1.1607933, y: -1.9929736, z: 0.7715435}
-  m_EndPoint: {x: 1.2535973, y: -1.9690754, z: 1.232132}
+  m_StartPoint: {x: -1.1607903, y: -1.5798373, z: 0.7715435}
+  m_EndPoint: {x: 1.2535999, y: -1.6628921, z: 1.2321322}
   m_StartTransform: {fileID: 0}
   m_EndTransform: {fileID: 0}
   m_Activated: 1

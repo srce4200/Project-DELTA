@@ -27,9 +27,11 @@ public class MapInfo : MonoBehaviour
         adminPanelDefault.SetActive(true);
         GameModeType = Launcher.Instance.GameMode;
         Instance = this;
+        
+        print("Editor/CustomMission");
         if (GameModeType == -1)
         {
-            print("Editor/CustomMission");
+            
         }
         else
         {

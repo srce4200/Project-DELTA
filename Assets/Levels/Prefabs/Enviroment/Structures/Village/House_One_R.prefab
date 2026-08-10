@@ -48,10 +48,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2311586999571369625, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_EndPoint.y
+      value: -1.7348008
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311586999571369625, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_StartPoint.x
+      value: -1.1410446
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311586999571369625, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_StartPoint.y
+      value: -1.77125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311586999571369625, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_StartPoint.z
+      value: 1.1341004
+      objectReference: {fileID: 0}
     - target: {fileID: 2826604173627564657, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0a072047ec1215f4c876c0866e289d56, type: 2}
+    - target: {fileID: 3110044773932059589, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_EndPoint.x
+      value: 1.1509981
+      objectReference: {fileID: 0}
+    - target: {fileID: 3110044773932059589, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_EndPoint.z
+      value: 1.1116312
+      objectReference: {fileID: 0}
+    - target: {fileID: 3110044773932059589, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_StartPoint.y
+      value: -1.8532922
+      objectReference: {fileID: 0}
+    - target: {fileID: 3110044773932059589, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_StartPoint.z
+      value: 0.77154374
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660608538576402292, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_EndPoint.y
+      value: -1.892464
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660608538576402292, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_EndPoint.z
+      value: 1.2321321
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660608538576402292, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_StartPoint.y
+      value: -1.7671924
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660608538576402292, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
+      propertyPath: m_StartPoint.z
+      value: 0.77154356
+      objectReference: {fileID: 0}
     - target: {fileID: 4871972791779040171, guid: c755c38bf2dd44f419613d25ac5ed28a, type: 3}
       propertyPath: m_TagString
       value: interactable

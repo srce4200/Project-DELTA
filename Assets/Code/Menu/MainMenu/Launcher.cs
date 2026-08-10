@@ -109,15 +109,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();
 
         //------------------TESTING----------------------
-        if(gamemodeDropdown.value==1)
-        {
-            GameMode = -1;
-        }
-        else
-        {
-            missionData = "";
-            GameMode = gamemodeDropdown.value;
-        }
+        GameMode = -1; //set to custom mission by default
 
         if (gamemodeDropdown.value == -1 && missionData == "")
             return;

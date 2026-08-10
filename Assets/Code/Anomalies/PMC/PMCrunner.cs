@@ -106,7 +106,7 @@ public class PMCrunner : MonoBehaviour
                 {
                     if (hit.transform == currentTarget)
                     {;
-                        _Weapon.Semi(currentTarget);
+                        _Weapon.FullAuto(currentTarget);
                     }
                     else 
                     {

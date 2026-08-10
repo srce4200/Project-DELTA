@@ -49,7 +49,7 @@ public class ObjectPlacer : MonoBehaviour
     public void OpenAtributes(GameObject go)
     {
         currentObject = go;
-        objectsArrtributes.SetActive(true);
+        OpenArrtributesMenu(true);
         PopulateAtributes();
     }
     public void SelectObject(GameObject go)
@@ -136,7 +136,7 @@ public class ObjectPlacer : MonoBehaviour
         }
         currentObject.GetComponent<CustomObjectSettings>().SetSettings(misO.objectsArtributes.ToArray(), misO.syncedToId);
 
-        objectsArrtributes.SetActive(false);
+        OpenArrtributesMenu(false);
         currentObject = null;
     }
     void MoveObject()
@@ -151,6 +151,7 @@ public class ObjectPlacer : MonoBehaviour
             SavePos();
         }
     }
+    public void OpenArrtributesMenu(bool b) => objectsArrtributes.SetActive(b);
     void SavePos()
     {
         MissionObject misO = currentObject.GetComponentInChildren<EditorObject>().missionObject;

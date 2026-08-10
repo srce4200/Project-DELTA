@@ -318,7 +318,7 @@ public class weponScript1 : Item
         muzzelFlash.Play();
 
         //might impact the game lag
-        Collider[] enemy = Physics.OverlapSphere(transform.position, 100f, enemyMask);
+        Collider[] enemy = Physics.OverlapSphere(transform.position, 200f, enemyMask);
         for(int i = 0; i < enemy.Length; i++)
         {
             try {

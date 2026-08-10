@@ -40,7 +40,7 @@ public class PMCweapon : MonoBehaviour
     { 
         if (Time.time >= nextTimeToFire && currentAmmo > 0 && !isReloading)
         {
-            nextTimeToFire = Time.time + 1f / weaponFirerate;
+            nextTimeToFire = Time.time + 0.5f / weaponFirerate;
             currentAmmo--;
             Fire(target);
         }
