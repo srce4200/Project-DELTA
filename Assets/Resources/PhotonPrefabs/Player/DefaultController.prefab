@@ -9305,7 +9305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
+  m_RequiresDepthTextureOption: 1
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
@@ -12188,6 +12188,10 @@ PrefabInstance:
     - target: {fileID: 4177290001190426253, guid: b78cdffb930641147b2c6b57a890a3ee, type: 3}
       propertyPath: m_Name
       value: Balcava
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177290001190426253, guid: b78cdffb930641147b2c6b57a890a3ee, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

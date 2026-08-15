@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.ParticleSystem;
 
 public class ObjectPlacer : MonoBehaviour
 {

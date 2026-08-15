@@ -13,6 +13,7 @@ public class LoadCustomMission : MonoBehaviour
     public void DecrypString(string missionData)
     {
         Mission savedMission = JsonUtility.FromJson<Mission>(missionData);
+        DayNightCycle.Instance.SetTime(savedMission.timeSetting);
         LoadObjects(savedMission);
     }
     private void LoadObjects(Mission savedMission)

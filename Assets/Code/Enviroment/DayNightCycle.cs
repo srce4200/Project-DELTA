@@ -5,8 +5,8 @@ public class DayNightCycle : MonoBehaviour
 {
     [Header("Time Settings")]
     public float timeSpeed = 1.0f;
-    [SerializeField] float dayDuration = 120f;
-    public float currentTime = 0f;
+    float dayDuration = 86400;
+    public float currentTime = 86400/2f;
     int currentDay;
 
     [Header("References")]
@@ -19,7 +19,11 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] Color nightHorizonColor = new Color(0.02f, 0.02f, 0.05f);
 
     PhotonView _pv;
-
+    public static DayNightCycle Instance;
+    private void Awake()
+    {
+        Instance = this;        
+    }
     private void Start()
     {
         _pv = GetComponent<PhotonView>();
@@ -29,6 +33,16 @@ public class DayNightCycle : MonoBehaviour
         {
             skyboxMaterial = RenderSettings.skybox;
         }
+    }
+    
+    public void SetTime(float timeInSeconds)
+    {
+        currentTime = timeInSeconds;
+        UpdateDayNightCycle();
+    }
+    public float GetTime()
+    {
+        return currentTime;
     }
 
     private void Update()

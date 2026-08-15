@@ -6450,16 +6450,8 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8587934885330518580, guid: b0479c75e505b454aa36b5c0048b40c4, type: 3}
-      propertyPath: m_Range
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8587934885330518580, guid: b0479c75e505b454aa36b5c0048b40c4, type: 3}
-      propertyPath: m_Intensity
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8587934885330518580, guid: b0479c75e505b454aa36b5c0048b40c4, type: 3}
-      propertyPath: m_InnerSpotAngle
-      value: 20.283297
+      propertyPath: m_SpotAngle
+      value: 102.77464
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

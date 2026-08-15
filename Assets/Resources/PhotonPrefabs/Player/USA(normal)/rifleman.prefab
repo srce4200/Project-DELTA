@@ -473,6 +473,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[1].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[2].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[3].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[4].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[5].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[6].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656233113893933719, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[7].SynchronizeType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1775756194195840652, guid: 9746437405e18f843974e5d767640bf4, type: 3}
@@ -526,6 +558,10 @@ PrefabInstance:
     - target: {fileID: 2885343518824071740, guid: 9746437405e18f843974e5d767640bf4, type: 3}
       propertyPath: ObservedComponents.Array.size
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2954955370892188091, guid: 9746437405e18f843974e5d767640bf4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 6.855
       objectReference: {fileID: 0}
     - target: {fileID: 3010579684204342166, guid: 9746437405e18f843974e5d767640bf4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1154,7 +1190,7 @@ PrefabInstance:
     - target: {fileID: 7100737054821436671, guid: 9746437405e18f843974e5d767640bf4, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 4ea4e100b83062f4883d2e989b94c8d5, type: 2}
+      objectReference: {fileID: 22100000, guid: 5e3b8a93db681e34fad0200b0fc246b6, type: 2}
     - target: {fileID: 7121797694555135808, guid: 9746437405e18f843974e5d767640bf4, type: 3}
       propertyPath: m_IsActive
       value: 0
