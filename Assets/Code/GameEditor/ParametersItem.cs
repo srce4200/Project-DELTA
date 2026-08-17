@@ -1,4 +1,3 @@
-using Photon.Pun.Demo.Cockpit;
 using System.Linq;
 using TMPro;
 using UnityEngine;

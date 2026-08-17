@@ -22,6 +22,7 @@ public class DayNightCycle : MonoBehaviour
     public static DayNightCycle Instance;
     private void Awake()
     {
+        print("Who faster");
         Instance = this;        
     }
     private void Start()

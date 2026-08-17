@@ -1,1 +1,1 @@
-{"missionName":"aa","mapName":"TestingMap","pathToFaction":"","timeSetting":43200.0,"objects":[],"photonSpawn":[]}
+{"missionName":"aa","mapName":"TestingMap","pathToFaction":"","timeSetting":32010.4375,"numberOfTickets":69,"objects":[{"id":0,"pathToObject":"Modules/Spawn/SpawnPoint","position":{"x":-8.300000190734864,"y":0.5,"z":4.200000286102295},"rotation":{"x":0.0,"y":0.0,"z":0.0,"w":1.0},"photonSpawn":false,"objectsArtributes":[{"paramName":"Spawn Name","defaultValues":["HQ"],"selectedValue":0,"parameterType":0}],"syncedToId":-1}],"photonSpawn":[]}

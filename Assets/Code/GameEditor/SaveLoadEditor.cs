@@ -15,7 +15,10 @@ public class Mission
     public string missionName;
     public string mapName;
     public string pathToFaction;
+
     public float timeSetting;
+    public int numberOfTickets;
+
     public List<MissionObject> objects = new List<MissionObject>();
     public List<MissionObject> photonSpawn = new List<MissionObject>();
 }
@@ -98,7 +101,10 @@ public class SaveLoadEditor : MonoBehaviour
 
         Mission mission = new Mission();
         mission.mapName = mapDropdown.options[mapDropdown.value].text;
+
         mission.timeSetting = 86400 / 2f;
+        mission.numberOfTickets = 999;
+
         SaveMission(mission);
 
         missionNameField.text = "";
@@ -116,8 +122,16 @@ public class SaveLoadEditor : MonoBehaviour
     void SaveMission(Mission missionData)
     {
         missionData.missionName = missionNameField.text;
-        if(DayNightCycle.Instance != null)
+
+        if(DayNightCycle.Instance != null)//if we not in mission yet dont do it
+        {
+            if(MissionSettings.Instance != null)
+            {
+                missionData.numberOfTickets = MissionSettings.Instance.GetTickets();
+            }
             missionData.timeSetting = DayNightCycle.Instance.GetTime();//get time data?
+        }
+
 
         string json = JsonUtility.ToJson(missionData);
         SaveNewMission(missionData.missionName, missionData.mapName, json); //save path
@@ -146,7 +160,12 @@ public class SaveLoadEditor : MonoBehaviour
     {
         string saveString = File.ReadAllText(currentFilePath);
         Mission savedMission = JsonUtility.FromJson<Mission>(saveString);
-            DayNightCycle.Instance.SetTime(savedMission.timeSetting);
+
+        //mission settings set(DONT FORGET ON LAODCUSTOMMISSION.CS
+        MapInfo.Instance.SetTickets(savedMission.numberOfTickets);
+        DayNightCycle.Instance.SetTime(savedMission.timeSetting);
+
+
         StartCoroutine(LoadObjects(savedMission));
     }
     private IEnumerator LoadObjects(Mission savedMission)

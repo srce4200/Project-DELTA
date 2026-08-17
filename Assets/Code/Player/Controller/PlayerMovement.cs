@@ -45,6 +45,15 @@ public class PlayerMovement : MonoBehaviour
     float xRotation, freeLookX, freeLookY, leanRotation;
 
     float lastAltPressTime = 0f;
+    [Header("Bobbing Settings")]
+    [SerializeField] private float bobFrequency = 5.0f;             // Speed of the bobbing motion
+    [SerializeField] private float bobHorizontalAmplitude = 0.05f;    // Side-to-side movement
+    [SerializeField] private float bobVerticalAmplitude = 0.05f;      // Up-and-down movement
+    [SerializeField] float walkMultiplier = 1.2f;
+    [SerializeField] private float smoothing = 10.0f;                // Smoothness of transition
+
+    float timer = 0.0f;
+    Vector3 defaultLocalPos;
 
     [Header("Audio")]
     [SerializeField] AudioClip walkSound;
@@ -75,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
             Destroy(mainCam.gameObject);
         }
 
+        defaultLocalPos = camHolder.localPosition;
         //initialize options script
         if (PlayerPrefs.HasKey("Sensitivity"))
             mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity");
@@ -85,7 +95,6 @@ public class PlayerMovement : MonoBehaviour
         if (!PV.IsMine)
             return;
         weaponSway.Aiming(isAiming);
-
         Look();
         Movement();
         Jump();
@@ -111,20 +120,22 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlaySound(sprintSound);
                 Sprinting();
+                UpdateHeadBob(1);
             }
             else //walk
             {
                 PlaySound(walkSound);
                 Walking();
+                UpdateHeadBob(walkMultiplier+ (1 - currentStamina / stamina));
             }
         }
         else
         {
+            UpdateHeadBob(0.75f+ (1-currentStamina/stamina));
             _audioSource.enabled = false;
             playerAnimatorCont.SetBool("isSprinting", false);
             playerAnimatorCont.SetBool("isWalking", false);
         }
-
     }
     void Walking()
     {
@@ -318,6 +329,25 @@ public class PlayerMovement : MonoBehaviour
         {
             leanRotation = 0;
         }
+    }
+    #endregion
+
+    #region HeadBob
+
+    
+
+    void UpdateHeadBob(float multiplier)
+    {
+        // Advance timer continuously
+        timer += Time.deltaTime * bobFrequency * (multiplier * 2);
+        // Calculate continuous sine/cosine offsets
+        float newX = defaultLocalPos.x + Mathf.Cos(timer) * bobHorizontalAmplitude * multiplier;
+        float newY = defaultLocalPos.y + Mathf.Sin(timer * 2.0f) * bobVerticalAmplitude * multiplier;
+
+        Vector3 targetPosition = new Vector3(newX, newY, defaultLocalPos.z);
+
+        // Smoothly interpolate to the target position
+        camHolder.transform.localPosition = Vector3.Lerp(camHolder.transform.localPosition, targetPosition, Time.deltaTime * smoothing);
     }
     #endregion
 }

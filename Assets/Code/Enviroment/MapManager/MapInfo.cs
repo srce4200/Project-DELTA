@@ -65,7 +65,16 @@ public class MapInfo : MonoBehaviour
 
     #endregion
 
-
+    public void SetTickets(int am)
+    {
+        if (PhotonNetwork.IsMasterClient)
+            GetComponent<PhotonView>().RPC(nameof(RPC_SetTickets), RpcTarget.AllBuffered, am);
+    }
+    [PunRPC]
+    void RPC_SetTickets(int am)
+    {
+        TeamTickets = am;
+    }
     IEnumerator EndGame()
     {
         yield return new WaitForSeconds(3f);

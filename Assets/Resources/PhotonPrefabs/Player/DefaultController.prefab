@@ -7872,6 +7872,11 @@ MonoBehaviour:
   spine001: {fileID: 350441037113316277}
   camHolder: {fileID: 8573510800208981219}
   recoilPivot: {fileID: 2954955370892188091}
+  bobFrequency: 1
+  bobHorizontalAmplitude: 0.01
+  bobVerticalAmplitude: 0.01
+  walkMultiplier: 1.5
+  smoothing: 10
   walkSound: {fileID: 8300000, guid: d10ca29eb2f67d640b1b1a795309f3ae, type: 3}
   sprintSound: {fileID: 8300000, guid: 0f71276ac0e18bf49a8727117d0c0969, type: 3}
   controller: {fileID: 7038958016291768019}

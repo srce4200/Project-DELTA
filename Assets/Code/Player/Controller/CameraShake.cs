@@ -18,7 +18,6 @@ public class CameraShake : MonoBehaviour
         }
         Instance = this;
     }
-
     public void Shake(float duration, float magnitude)
     {
         if (shaking == false)

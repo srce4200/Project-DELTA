@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class LoadCustomMission : MonoBehaviour
 {
+    [SerializeField] DayNightCycle dyNiCycle;
     [SerializeField] Transform addedObjectsParent;
     private void Awake()
     {
@@ -13,7 +14,11 @@ public class LoadCustomMission : MonoBehaviour
     public void DecrypString(string missionData)
     {
         Mission savedMission = JsonUtility.FromJson<Mission>(missionData);
-        DayNightCycle.Instance.SetTime(savedMission.timeSetting);
+
+        MapInfo.Instance.SetTickets(savedMission.numberOfTickets);
+        dyNiCycle.SetTime(savedMission.timeSetting);
+
+
         LoadObjects(savedMission);
     }
     private void LoadObjects(Mission savedMission)
