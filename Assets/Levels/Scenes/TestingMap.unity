@@ -41803,6 +41803,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2932676367556269962, guid: 39374fdc18bcc1b4d8967729168c7cb7, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932676367556269962, guid: 39374fdc18bcc1b4d8967729168c7cb7, type: 3}
       propertyPath: orthographic size
       value: 1000
       objectReference: {fileID: 0}
