@@ -112,6 +112,7 @@ public class SaveLoadEditor : MonoBehaviour
     public void SaveAllObjects(List<MissionObject> placableObjects, List<MissionObject> logicObjects)
     {
         Mission mission = new Mission();
+        mission.numberOfTickets = MissionSettings.Instance.GetTickets();
         mission.objects = placableObjects;
         mission.photonSpawn  = logicObjects;
         mission.mapName = currentFilePath.Substring(currentFilePath.LastIndexOf('.') + 1);
@@ -131,7 +132,6 @@ public class SaveLoadEditor : MonoBehaviour
             }
             missionData.timeSetting = DayNightCycle.Instance.GetTime();//get time data?
         }
-
 
         string json = JsonUtility.ToJson(missionData);
         SaveNewMission(missionData.missionName, missionData.mapName, json); //save path
@@ -163,6 +163,7 @@ public class SaveLoadEditor : MonoBehaviour
 
         //mission settings set(DONT FORGET ON LAODCUSTOMMISSION.CS
         MapInfo.Instance.SetTickets(savedMission.numberOfTickets);
+        print("Setting tickets to " + savedMission.numberOfTickets);
         DayNightCycle.Instance.SetTime(savedMission.timeSetting);
 
 

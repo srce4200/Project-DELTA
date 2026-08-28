@@ -5798,7 +5798,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 7.409e-42, y: 0, z: 0, w: 1e-45}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -2.231151e-20}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -6288,7 +6288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accuracy: 0.069
   bulletName: "7.62\xD751mm_I"
-  fireSound: {fileID: 8300000, guid: 50943c1f9281f16449b1d941a1b4087e, type: 3}
+  fireSound: {fileID: 8300000, guid: e181e10b922fa63469f381b0684ee383, type: 3}
   weaponFirerate: 9
   reloadSpeed: 3
   ammoInMag: 30
@@ -6317,9 +6317,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 100
+  MaxDistance: 200
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -6327,23 +6327,32 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.005
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      time: 0.43656355
+      value: 0.3373152
+      inSlope: -2.2529066
+      outSlope: -2.2529066
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.09242005
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.4411138
+      outSlope: -0.4411138
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.16807042
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -6366,7 +6375,7 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.005680084
       value: 0
       inSlope: 0
       outSlope: 0

@@ -18085,7 +18085,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.23333333
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 167d54e001c984340a925bcc3d99032a, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 983ab365ea4fcf448bf12d2f13db99ca, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &1247439257
 MonoBehaviour:
@@ -18881,7 +18881,6 @@ GameObject:
   - component: {fileID: 1268295505}
   - component: {fileID: 1268295507}
   - component: {fileID: 1268295506}
-  - component: {fileID: 1268295508}
   m_Layer: 5
   m_Name: MissionSettings
   m_TagString: Untagged
@@ -18948,20 +18947,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268295504}
   m_CullTransparentMesh: 1
---- !u!114 &1268295508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268295504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b204dd96a3d2ff0469500bc38e9d8423, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeSlider: {fileID: 1992286804}
-  ticketInp: {fileID: 456091871}
 --- !u!1 &1277722294
 GameObject:
   m_ObjectHideFlags: 0
@@ -30878,7 +30863,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1268295508}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MissionSettings, Assembly-CSharp
         m_MethodName: Apply
         m_Mode: 1
@@ -42966,6 +42951,7 @@ GameObject:
   - component: {fileID: 1982167846673874357}
   - component: {fileID: 1982167846673874360}
   - component: {fileID: 1982167846673874361}
+  - component: {fileID: 1982167846673874362}
   m_Layer: 0
   m_Name: Editor
   m_TagString: Untagged
@@ -43012,6 +42998,20 @@ MonoBehaviour:
   placableLayer:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &1982167846673874362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982167846673874359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b204dd96a3d2ff0469500bc38e9d8423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeSlider: {fileID: 1992286804}
+  ticketInp: {fileID: 456091871}
 --- !u!4 &1982167847833796402
 Transform:
   m_ObjectHideFlags: 0
