@@ -6286,9 +6286,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 579675d1217fe6b4e837eaef62bce877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accuracy: 0.069
+  accuracy: 0.2
   bulletName: "7.62\xD751mm_I"
-  fireSound: {fileID: 8300000, guid: e181e10b922fa63469f381b0684ee383, type: 3}
+  fireSound: {fileID: 8300000, guid: d58811c00daf7e240b213c26a4d18185, type: 3}
   weaponFirerate: 9
   reloadSpeed: 3
   ammoInMag: 30
@@ -7704,6 +7704,10 @@ MonoBehaviour:
   visionMask:
     serializedVersion: 2
     m_Bits: 1800
+  headMaxYaw: 100
+  headTurnSpeed: 10
+  closeRange: 15
+  midRange: 40
 --- !u!1 &7695441375370692822
 GameObject:
   m_ObjectHideFlags: 0

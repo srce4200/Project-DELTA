@@ -21,8 +21,9 @@ public class PMCweapon : MonoBehaviour
     [SerializeField] ParticleSystem muzzelFlash; 
     Animator handAnimations;
      
-    PhotonView PV;  
-
+    PhotonView PV;
+    bool isBursting;
+    int burstCount = 5;
     ////----------------------START----------------------------
     void Start()
     {
@@ -61,7 +62,34 @@ public class PMCweapon : MonoBehaviour
         {
             StartCoroutine(Reload( reloadSpeed));
         }
-    }  
+    }
+    public void Burst(Transform target)
+    {
+        if (!isBursting && !isReloading && currentAmmo > 0 && Time.time >= nextTimeToFire)
+        {
+            StartCoroutine(BurstRoutine(target));
+        }
+        else if (!isReloading && currentAmmo < 1)
+        {
+            StartCoroutine(Reload(reloadSpeed));
+        }
+    }
+
+    IEnumerator BurstRoutine(Transform target)
+    {
+        isBursting = true;
+        for (int i = 0; i < burstCount; i++)
+        {
+            if (currentAmmo <= 0 || target == null) break;
+            currentAmmo--;
+            Fire(target);
+            yield return new WaitForSeconds(0.5f / weaponFirerate);
+        }
+        // Small enforced pause after a burst before another fire command is accepted -
+        // stops the AI from chaining bursts into a de-facto full-auto stream.
+        nextTimeToFire = Time.time + 1f / weaponFirerate;
+        isBursting = false;
+    }
 
     void Fire(Transform target)
     {
@@ -70,7 +98,7 @@ public class PMCweapon : MonoBehaviour
         handAnimations.SetTrigger("Shoot");
         PV.RPC("BulletShoot", RpcTarget.All);
         
-        gunBarell.transform.LookAt(target);
+        //gunBarell.transform.LookAt(target);
         float deviation = 1.0f - accuracy;
 
         float spreadX = Random.Range(-deviation, deviation) * 15f;

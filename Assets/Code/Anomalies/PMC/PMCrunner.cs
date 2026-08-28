@@ -26,6 +26,22 @@ public class PMCrunner : MonoBehaviour
 
     [SerializeField] private LayerMask visionMask;
 
+    [Header("Aiming / Awareness")]
+    [Tooltip("How far (deg) the head/torso can turn away from the body's forward before the whole body has to pivot - lets the AI keep a target in sight while still running toward cover.")]
+    [SerializeField] float headMaxYaw = 100f;
+    [SerializeField] float headTurnSpeed = 10f;
+    Vector3 pointOfInterest; // where we're currently looking while investigating (aware state)
+    Vector3 lastKnownShotDir;
+
+    [Header("Fire Discipline")]
+    [Tooltip("Inside this range the AI opens up on full auto.")]
+    [SerializeField] float closeRange = 15f;
+    [Tooltip("Between closeRange and this the AI fires controlled bursts. Beyond it, single well-aimed shots.")]
+    [SerializeField] float midRange = 40f;
+    bool suppressed;
+    float suppressionTimer;
+    bool combatReady;
+
     void Start()
     {
         _pv = GetComponent<PhotonView>();
@@ -37,9 +53,24 @@ public class PMCrunner : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        if (curState == AiState.combat && currentTarget != null) //we see target, look at it
+        if (suppressionTimer > 0f)
         {
+            suppressionTimer -= Time.deltaTime;
+            if (suppressionTimer <= 0f) suppressed = false;
+        }
+
+        if (curState == AiState.combat && currentTarget != null)
+        {
+            // Disable NavMesh path rotation so the body can face the target while moving
+            _Movement.SetAutoRotation(false);
             _Movement.LookAt(currentTarget);
+
+            AimAt(currentTarget.position);
+            //_Weapon.AimWeaponAt(currentTarget); // Keep barrel pointed at player between shots
+        }
+        else
+        {
+            _Movement.SetAutoRotation(true);
         }
     }
 
@@ -59,21 +90,25 @@ public class PMCrunner : MonoBehaviour
         switch (curState)
         {
             case AiState.safe:
+                pointOfInterest = Vector3.zero;
                 StartCoroutine(ResetScan());
                 break;
             case AiState.aware:
                 StartCoroutine(ScanEnvironment());
                 break;
             case AiState.combat:
-                //StartCoroutine(ScanEnvironment());
+                pointOfInterest = Vector3.zero;
+                suppressed = false;
+                suppressionTimer = 0f;
                 headPivot.localRotation = Quaternion.identity;
                 StartCoroutine(CombatBehaviorLoop());
                 break;
         }
     }
-    public void AssignWaypoint(Waypoint wp)
+
+    public void AssignWaypoint(Waypoint wp, bool force = false)
     {
-        if (assignedWaypoint != null) return;
+        if (assignedWaypoint != null && !force) return;
         assignedWaypoint = wp;
         switch (assignedWaypoint.wpType)
         {
@@ -94,29 +129,46 @@ public class PMCrunner : MonoBehaviour
 
     IEnumerator CombatBehaviorLoop()
     {
+        combatReady = false;
+        yield return new WaitForSeconds(Random.Range(0.15f, 0.6f));//reaction time
+        combatReady = true;
+
         while (curState == AiState.combat)
         {
             if (currentTarget != null)
             {
                 // Direct line of sight check
                 Vector3 dir = (currentTarget.position - headPivot.position).normalized;
+                float dist = Vector3.Distance(headPivot.position, currentTarget.position);
                 RaycastHit hit;
 
                 if (Physics.Raycast(headPivot.position, dir, out hit, 200f))
                 {
                     if (hit.transform == currentTarget)
-                    {;
-                        _Weapon.FullAuto(currentTarget);
-                    }
-                    else 
                     {
-                        // Target hidden behind obstacle (e.g. building) -> Trigger Flank
-
+                        lastKnownShotDir = dir;
+                        if (combatReady) 
+                            ChooseFireMode(dist);
+                        AimAt(hit.point);
+                    }
+                    else if (combatReady && !suppressed)
+                    {
+                        suppressed = true;
+                        suppressionTimer = 1.5f;
+                        _Weapon.Burst(currentTarget);
                     }
                 }
             }
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    // Distance-based fire mode selection
+    void ChooseFireMode(float distance)
+    {
+        if (distance <= closeRange) _Weapon.FullAuto(currentTarget);
+        else if (distance <= midRange) _Weapon.Burst(currentTarget);
+        else _Weapon.Semi(currentTarget);
     }
 
     void FlankRoute(Vector3 targetPos)
@@ -176,7 +228,8 @@ public class PMCrunner : MonoBehaviour
     
     public void SetDestination(Vector3 pos)
     {
-        StopCoroutine(MoveToDestination());
+        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+
         currentWaypoint = pos;
         moveCoroutine = StartCoroutine(MoveToDestination());
     }
@@ -218,7 +271,6 @@ public class PMCrunner : MonoBehaviour
             // This calculates the absolute 3D angle (handles both horizontal and vertical deviation)
             float angleToTarget = Vector3.Angle(headPivot.forward, directionToTarget);
 
-            // If the angle is less than 40, they are inside the "cone" of vision
             if (angleToTarget < 60)
             {
                 RaycastHit hit;
@@ -252,10 +304,38 @@ public class PMCrunner : MonoBehaviour
     {
         while (true)
         {
-            float angle = Mathf.Sin(Time.time * 2f) * maxAngle;
-            headPivot.localRotation = Quaternion.Euler(0, angle, 0);
+            if (pointOfInterest != Vector3.zero)
+            {
+                // Investigating a noise/hit rather than idly scanning - keep the head trained on it.
+                AimAt(pointOfInterest);
+            }
+            else
+            {
+                float angle = Mathf.Sin(Time.time * 2f) * maxAngle;
+                headPivot.localRotation = Quaternion.Euler(0, angle, 0);
+            }
             yield return null;
         }
     }
+
+    void AimAt(Vector3 worldPos)
+    {
+        if (headPivot == null) return;
+
+        Vector3 dir = worldPos - headPivot.position;
+        dir.y = 0f; // keep traversal on the horizontal plane; vertical aim is left to animation/IK
+        if (dir.sqrMagnitude < 0.001f) return;
+
+        Quaternion desiredWorldRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
+        Quaternion desiredLocalRot = Quaternion.Inverse(transform.rotation) * desiredWorldRot;
+
+        float localYaw = desiredLocalRot.eulerAngles.y;
+        if (localYaw > 180f) localYaw -= 360f;
+        localYaw = Mathf.Clamp(localYaw, -headMaxYaw, headMaxYaw);
+
+        Quaternion clampedLocalRot = Quaternion.Euler(0f, localYaw, 0f);
+        headPivot.localRotation = Quaternion.Slerp(headPivot.localRotation, clampedLocalRot, Time.deltaTime * headTurnSpeed);
+    }
+
     #endregion
 }

@@ -50,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   squadMembers:
   - {fileID: 8896886088829648373}
+  formation: 2
+  formationSpacing: 3.5
 --- !u!114 &8892206604145118417
 MonoBehaviour:
   m_ObjectHideFlags: 0

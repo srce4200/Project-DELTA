@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 
 public enum WaypointType {Move, Flank, TakeCover,  PatrolArea}
+public enum FormationType { Column, Line, Wedge }
 
 [Serializable]
 public class Waypoint
@@ -29,7 +30,11 @@ public class PMCsquad : MonoBehaviour
     enum LastPosState {safe, dead, searchable, active }
     LastPosState lastPosState = LastPosState.safe;
     bool lastPosDowngrading;
-    
+
+    [Header("Formation")]
+    [SerializeField] FormationType formation = FormationType.Wedge;
+    [SerializeField] float formationSpacing = 3.5f;
+
     void Update()
     {
         if (!PhotonNetwork.IsMasterClient || squadMembers.Count == 0) return;
@@ -59,7 +64,10 @@ public class PMCsquad : MonoBehaviour
                     p.SwitchState(AiState.combat);
                     //eyes on, take cover, engage,
                     //might not be this so maybe need run help
-                p.AssignWaypoint(new Waypoint(WaypointType.TakeCover, assignedTarget.position, 5));
+                if((int)UnityEngine.Random.Range(0,10) > 4)
+                    p.AssignWaypoint(new Waypoint(WaypointType.TakeCover, assignedTarget.position, UnityEngine.Random.Range(5, 10)));
+                else
+                    p.AssignWaypoint(new Waypoint(WaypointType.Flank, assignedTarget.position, 10));
             }
             
             StopCoroutine(StartLastPosDegredation());
@@ -76,12 +84,12 @@ public class PMCsquad : MonoBehaviour
             switch(lastPosState) //need reduction time outs
             {
                 case LastPosState.active:
-                    p.AssignWaypoint(new Waypoint(WaypointType.Flank, lastTargetPos, 3));
+                    p.AssignWaypoint(new Waypoint(WaypointType.Flank, lastTargetPos, 10));
                     p.SetTarget(null);
                     break;
                 case LastPosState.searchable:
                     p.SwitchState(AiState.aware);
-                    p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 3));
+                    p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 5));
                     break;
                 case LastPosState.dead:
                     p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 7));
@@ -107,6 +115,10 @@ public class PMCsquad : MonoBehaviour
                 break;
             case LastPosState.dead:
                 lastPosState = LastPosState.safe;
+
+                if (squadMembers[0] == null) squadMembers.RemoveAt(0);
+                else MoveSquadInFormation(squadMembers[0].transform.position);
+
                 break;
             case LastPosState.safe:
                 lastPosDowngrading = false;
@@ -139,4 +151,49 @@ public class PMCsquad : MonoBehaviour
             lastPosState = LastPosState.searchable;
         }
     }
+    
+    #region Formation
+ 
+    // Moves the whole squad toward 'destination' while holding a formation shape, similar to
+    // an Arma squad leader's "Move" order shuffling the team into formation. This rides on the
+    // existing waypoint-following system (WaypointType.Move) per member - it just offsets each
+    // member's target position before handing it off, so PMCrunner's movement code is untouched.
+    public void MoveSquadInFormation(Vector3 destination, float waitDuration = 0f)
+    {
+        Vector3 facing = (destination - transform.position);
+        facing.y = 0f;
+        facing = facing.sqrMagnitude > 0.01f ? facing.normalized : transform.forward;
+
+        for (int i = 1; i < squadMembers.Count; i++)
+        {
+            if (squadMembers[i] == null) continue;
+            Vector3 offset = GetFormationOffset(i, facing);
+            squadMembers[i].AssignWaypoint(new Waypoint(WaypointType.Move, destination + offset, waitDuration), true);
+        }
+    }
+
+    Vector3 GetFormationOffset(int index, Vector3 facing)
+    {
+        Vector3 right = Vector3.Cross(Vector3.up, facing).normalized;
+
+        switch (formation)
+        {
+            case FormationType.Line:
+                {
+                    float side = (index % 2 == 0) ? 1f : -1f;
+                    int rank = (index / 2) + 1;
+                    return right * side * rank * formationSpacing;
+                }
+            case FormationType.Column:
+                return -facing * index * formationSpacing;
+            case FormationType.Wedge:
+            default:
+                {
+                    float side = (index % 2 == 0) ? 1f : -1f;
+                    int rank = (index / 2) + 1;
+                    return (right * side * rank * formationSpacing) - (facing * rank * formationSpacing * 0.5f);
+                }
+        }
+    }
+    #endregion
 }

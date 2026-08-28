@@ -92,5 +92,9 @@ public class PMCmovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
-    
+    public void SetAutoRotation(bool enable)
+    {
+        if (agent != null) agent.updateRotation = enable;
+    }
+
 }

@@ -49,6 +49,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8120291425921019339, guid: a916c9fce252f9a4abb92190a5c0e210, type: 3}
+      propertyPath: formationSpacing
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120291425921019339, guid: a916c9fce252f9a4abb92190a5c0e210, type: 3}
       propertyPath: squadMembers.Array.size
       value: 4
       objectReference: {fileID: 0}
