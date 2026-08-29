@@ -6,11 +6,13 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public enum AiState{ safe, aware, combat} 
-
+public enum UnitSide { blufor, redfor}
 
 public class PMCrunner : MonoBehaviour
 {
-    string enemyTag = "ermacore faction";
+    public UnitSide unitSide = UnitSide.blufor;
+    string enemyTag;
+
     PhotonView _pv;
     PMCmovement _Movement;
     public PMCweapon _Weapon;
@@ -41,12 +43,26 @@ public class PMCrunner : MonoBehaviour
     bool suppressed;
     float suppressionTimer;
     bool combatReady;
-
+    private void Awake()
+    {
+        MapInfo.Instance.AddAliveUnit(transform, unitSide);
+    }
     void Start()
     {
         _pv = GetComponent<PhotonView>();
         _Movement = GetComponent<PMCmovement>();
-        enemyColliders = MapInfo.Instance.activePlayers; //it should bind to active playerrs list
+
+        if(unitSide == UnitSide.redfor)
+        {
+            enemyTag = "blufor";
+            enemyColliders = MapInfo.Instance.activeBlufor;
+
+        }
+        else if (unitSide == UnitSide.blufor)
+        {
+            enemyTag = "redfor";
+            enemyColliders = MapInfo.Instance.activeRedfor;
+        }
     }
 
     void Update()
@@ -214,7 +230,7 @@ public class PMCrunner : MonoBehaviour
 
                 if (Physics.Raycast(randomPos + Vector3.up, -(randomPos + Vector3.up - enemyPos), out hit, Mathf.Infinity)){ //we can hide?
                     print(enemyPos);
-                    if(!hit.collider.tag.Equals("ermacore faction"))
+                    if(!hit.collider.tag.Equals(enemyTag))
                     {
                         return randomPos;
                     }

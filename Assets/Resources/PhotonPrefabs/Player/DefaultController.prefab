@@ -7737,7 +7737,7 @@ GameObject:
   - component: {fileID: 7713564377384260821}
   m_Layer: 9
   m_Name: DefaultController
-  m_TagString: ermacore faction
+  m_TagString: blufor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

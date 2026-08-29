@@ -34,13 +34,13 @@ public class bulletBehaviour : MonoBehaviour
 
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider.gameObject.tag == "enemy" && !targetPlayer)
+            if (hits[i].collider.gameObject.tag == "redfor" && !targetPlayer)
             {
                 TakeDamage(hits[i].collider.gameObject.GetComponent<Bodypart>(), bulletDamage);
                 Quaternion rot = Quaternion.FromToRotation(Vector3.up, hits[i].normal);
                 SpawnEffect(hitEffectFlesh, hits[i].point, rot);
             }
-            if (hits[i].collider.gameObject.tag == "ermacore faction" && targetPlayer)
+            if (hits[i].collider.gameObject.tag == "blufor" && targetPlayer)
             {
                 hits[i].collider.gameObject.GetComponent<playerHealth>().TakeDamage(bulletDamage / 2);
 

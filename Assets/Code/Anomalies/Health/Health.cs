@@ -50,6 +50,8 @@ public class Health : MonoBehaviour
     }
     void DieDelay()
     {
+        if (GetComponent<PMCrunner>() != null)
+            MapInfo.Instance.RemoveAliveUnit(transform, GetComponent<PMCrunner>().unitSide);
 
         if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.Destroy(this.gameObject);

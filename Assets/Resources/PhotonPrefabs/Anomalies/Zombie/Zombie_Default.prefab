@@ -170,7 +170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 04bd9a6cbc2394e4096762ff4f3bc02c, type: 3}
       propertyPath: m_TagString
-      value: enemy
+      value: redfor
       objectReference: {fileID: 0}
     - target: {fileID: 1092499841853033881, guid: 04bd9a6cbc2394e4096762ff4f3bc02c, type: 3}
       propertyPath: m_Layer

@@ -112,7 +112,8 @@ public class PMCweapon : MonoBehaviour
     [PunRPC]
     void BulletShoot()
     {
-        soundSource.PlayOneShot(fireSound);
+        soundSource.pitch = Random.Range(0.9f, 1.1f);
+        soundSource.PlayOneShot(fireSound, 0.8f);
         muzzelFlash.Play(); 
     }  
     IEnumerator Reload(float reloadSpeed)

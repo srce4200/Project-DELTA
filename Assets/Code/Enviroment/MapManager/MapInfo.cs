@@ -21,7 +21,10 @@ public class MapInfo : MonoBehaviour
     [Header("Active Tasks")]
     public List<Task> tasks;
 
-    [HideInInspector]public List<Transform> activePlayers = new List<Transform>();
+    //[HideInInspector]public List<Transform> activePlayers = new List<Transform>();
+
+    [HideInInspector] public List<Transform> activeBlufor = new List<Transform>();
+    [HideInInspector] public List<Transform> activeRedfor = new List<Transform>();
     private void Awake()
     {
         adminPanelDefault.SetActive(true);
@@ -85,12 +88,26 @@ public class MapInfo : MonoBehaviour
         PhotonNetwork.LoadLevel(0);
     }
 
-    public void AddAlivePlayer(Transform tr)
+    //public void AddAlivePlayer(Transform tr)
+    //{
+    //    activePlayers.Add(tr);
+    //}
+    //public void RemoveAlivePlayer(Transform tr)
+    //{
+    //    activePlayers.Remove(tr);
+    //}
+    public void AddAliveUnit(Transform tr, UnitSide unitSide)
     {
-        activePlayers.Add(tr);
+        if(unitSide == UnitSide.blufor)
+            activeBlufor.Add(tr);
+        else if (unitSide == UnitSide.redfor)
+            activeRedfor.Add(tr);
     }
-    public void RemoveAlivePlayer(Transform tr)
+    public void RemoveAliveUnit(Transform tr, UnitSide unitSide)
     {
-        activePlayers.Remove(tr);
+        if (unitSide == UnitSide.blufor)
+            activeBlufor.Remove(tr);
+        else if (unitSide == UnitSide.redfor)
+            activeRedfor.Remove(tr);
     }
 }
