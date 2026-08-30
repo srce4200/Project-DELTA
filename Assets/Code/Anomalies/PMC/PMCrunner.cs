@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public enum AiState{ safe, aware, combat} 
 public enum UnitSide { blufor, redfor}
-
+public enum UnitRole { rifleman, autorifleman, medic}
 public class PMCrunner : MonoBehaviour
 {
     public UnitSide unitSide = UnitSide.blufor;
@@ -43,20 +43,27 @@ public class PMCrunner : MonoBehaviour
     bool suppressed;
     float suppressionTimer;
     bool combatReady;
-    private void Awake()
-    {
-        MapInfo.Instance.AddAliveUnit(transform, unitSide);
-    }
+
     void Start()
     {
         _pv = GetComponent<PhotonView>();
         _Movement = GetComponent<PMCmovement>();
+        StartCoroutine(UnitRegistration());
+    }
+    IEnumerator UnitRegistration()
+    {
+        while (MapInfo.Instance == null)//wait initialization
+        {
+            yield return null; 
+        }
+
+        MapInfo.Instance.AddAliveUnit(transform, unitSide);
+        yield return new WaitForSeconds(0.2f);
 
         if(unitSide == UnitSide.redfor)
         {
             enemyTag = "blufor";
             enemyColliders = MapInfo.Instance.activeBlufor;
-
         }
         else if (unitSide == UnitSide.blufor)
         {
@@ -64,7 +71,6 @@ public class PMCrunner : MonoBehaviour
             enemyColliders = MapInfo.Instance.activeRedfor;
         }
     }
-
     void Update()
     {
         if (!PhotonNetwork.IsMasterClient) return;
@@ -99,7 +105,11 @@ public class PMCrunner : MonoBehaviour
     public void SwitchState(AiState newState)
     {
         curState = newState;
-        StopAllCoroutines();
+
+        StopCoroutine(CombatBehaviorLoop());
+        StopCoroutine(ResetScan());
+        StopCoroutine(ScanEnvironment());
+
         assignedWaypoint = null;
         moveCoroutine = null;
 
@@ -122,27 +132,45 @@ public class PMCrunner : MonoBehaviour
         }
     }
 
-    public void AssignWaypoint(Waypoint wp, bool force = false)
+    public void AssignWaypoint(Waypoint wp, bool force = false, bool doSprint = false)
     {
         if (assignedWaypoint != null && !force) return;
         assignedWaypoint = wp;
+
         switch (assignedWaypoint.wpType)
         {
             case WaypointType.Move:
                 SetDestination(assignedWaypoint.wpTargetPos);
                 break;
             case WaypointType.Flank:
-                FlankRoute(assignedWaypoint.wpTargetPos);
+                FlankRoute(assignedWaypoint.wpTargetPos, 20, 10);
                 break;
             case WaypointType.TakeCover:
-                SetDestination(FindCover(assignedWaypoint.wpTargetPos));
+                SetDestination(FindCover(assignedWaypoint.wpTargetPos), doSprint);
+                break;
+            case WaypointType.AdvanceAndTakeCover:
+                SetDestination(FindCover(GetFlankRoutePos(assignedWaypoint.wpTargetPos, 10, 150)));
                 break;
             case WaypointType.PatrolArea:
                 SetDestination(AreaPatrol(assignedWaypoint.wpTargetPos));
                 break;
         }
     }
+    public bool CurrentWaypointCompleted()
+    {
+        if (assignedWaypoint == null)
+            return true;
 
+        switch (assignedWaypoint.wpType)
+        {
+            default:
+                if(Vector3.Distance(transform.position, assignedWaypoint.wpTargetPos) < 5)
+                    return true;
+
+                return false;
+        }
+    }
+    bool targetSeen = false;
     IEnumerator CombatBehaviorLoop()
     {
         combatReady = false;
@@ -151,30 +179,36 @@ public class PMCrunner : MonoBehaviour
 
         while (curState == AiState.combat)
         {
-            if (currentTarget != null)
+            if (currentTarget == null)
             {
-                // Direct line of sight check
-                Vector3 dir = (currentTarget.position - headPivot.position).normalized;
-                float dist = Vector3.Distance(headPivot.position, currentTarget.position);
-                RaycastHit hit;
+                yield return new WaitForSeconds(0.2f);
+                continue;
+            }
 
-                if (Physics.Raycast(headPivot.position, dir, out hit, 200f))
+            // Direct line of sight check
+            Vector3 dir = (currentTarget.position - headPivot.position).normalized;
+            float dist = Vector3.Distance(headPivot.position, currentTarget.position);
+            RaycastHit hit;
+
+            if (Physics.Raycast(headPivot.position, dir, out hit, 200f))
+            {
+                if (hit.transform == currentTarget)
                 {
-                    if (hit.transform == currentTarget)
-                    {
-                        lastKnownShotDir = dir;
-                        if (combatReady) 
-                            ChooseFireMode(dist);
-                        AimAt(hit.point);
-                    }
-                    else if (combatReady && !suppressed)
-                    {
-                        suppressed = true;
-                        suppressionTimer = 1.5f;
-                        _Weapon.Burst(currentTarget);
-                    }
+                    lastKnownShotDir = dir;
+                    if (combatReady)
+                        ChooseFireMode(dist);
+                    AimAt(hit.point);
+                    targetSeen = true;
+                }
+                else if (targetSeen && combatReady && !suppressed)
+                {
+                    targetSeen = false;
+                    suppressed = true;
+                    suppressionTimer = 1.5f;
+                    _Weapon.Burst(currentTarget);
                 }
             }
+
             yield return new WaitForSeconds(0.2f);
         }
     }
@@ -187,19 +221,28 @@ public class PMCrunner : MonoBehaviour
         else _Weapon.Semi(currentTarget);
     }
 
-    void FlankRoute(Vector3 targetPos)
+    void FlankRoute(Vector3 targetPos, float flankWidth, float frontDistance)
     {
         Vector3 dirToTarget = (targetPos - transform.position).normalized;
         // Generate a perpendicular offset vector relative to the target line to move around the building
         Vector3 leftOrRight = Random.value > 0.5f ? Vector3.Cross(dirToTarget, Vector3.up) : -Vector3.Cross(dirToTarget, Vector3.up);
 
-        Vector3 flankPosition = targetPos + (leftOrRight * 12f) - (dirToTarget * 4f);
+        Vector3 flankPosition = targetPos + (leftOrRight * flankWidth) - (dirToTarget * frontDistance);
 
         NavMeshHit navHit;
         if (NavMesh.SamplePosition(flankPosition, out navHit, 15f, NavMesh.AllAreas))
         {
             SetDestination(navHit.position);
         }
+    }
+    Vector3 GetFlankRoutePos(Vector3 targetPos, float flankWidth, float frontDistance)
+    {
+        Vector3 dirToTarget = (targetPos - transform.position).normalized;
+        // Generate a perpendicular offset vector relative to the target line to move around the building
+        Vector3 leftOrRight = Random.value > 0.5f ? Vector3.Cross(dirToTarget, Vector3.up) : -Vector3.Cross(dirToTarget, Vector3.up);
+
+        Vector3 flankPosition = targetPos + (leftOrRight * flankWidth) - (dirToTarget * frontDistance);
+        return flankPosition;
     }
 
     Vector3 AreaPatrol(Vector3 targetPos)
@@ -229,7 +272,6 @@ public class PMCrunner : MonoBehaviour
                 randomPos = hitNav.position; 
 
                 if (Physics.Raycast(randomPos + Vector3.up, -(randomPos + Vector3.up - enemyPos), out hit, Mathf.Infinity)){ //we can hide?
-                    print(enemyPos);
                     if(!hit.collider.tag.Equals(enemyTag))
                     {
                         return randomPos;
@@ -242,18 +284,17 @@ public class PMCrunner : MonoBehaviour
     
     #region SetDestination
     
-    public void SetDestination(Vector3 pos)
+    public void SetDestination(Vector3 pos, bool doSprint = false)
     {
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
 
         currentWaypoint = pos;
-        moveCoroutine = StartCoroutine(MoveToDestination());
+        moveCoroutine = StartCoroutine(MoveToDestination(doSprint));
     }
 
-    IEnumerator MoveToDestination()
+    IEnumerator MoveToDestination(bool doSprint = false)
     {
-        bool shouldSprint = (curState == AiState.combat);
-        _Movement.MoveTo(currentWaypoint, shouldSprint);
+        _Movement.MoveTo(currentWaypoint, doSprint);
 
         while (Vector3.Distance(transform.position, currentWaypoint) > 2f)
         {
@@ -292,6 +333,7 @@ public class PMCrunner : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(headPivot.position, directionToTarget, out hit, 250, visionMask))
                 {
+                    print(hit.transform.name);
                     if (hit.transform.CompareTag(enemyTag))
                     {
                         return target;

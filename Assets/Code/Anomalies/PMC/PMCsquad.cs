@@ -4,7 +4,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 
-public enum WaypointType {Move, Flank, TakeCover,  PatrolArea}
+public enum WaypointType {Move, Flank, TakeCover, AdvanceAndTakeCover,  PatrolArea}
 public enum FormationType { Column, Line, Wedge }
 
 [Serializable]
@@ -46,59 +46,62 @@ public class PMCsquad : MonoBehaviour
         {
             if (squadMembers[i] == null) continue;
 
-            MemberTaskAssign(squadMembers[i]);
+            MemberTaskAssign(squadMembers[i], i);
         }
     }
-    void MemberTaskAssign(PMCrunner p)
+    void MemberTaskAssign(PMCrunner p, int squadIndex)
     {
         if (sharedTargets.Count > 0) //enemy found directly
         {
-            Transform assignedTarget = sharedTargets[ sharedTargets.Count-1]; //multiple targets??? ->need better multi targeting
+            Transform assignedTarget = GetTarget(squadIndex, sharedTargets); //multiple targets??? ->need better multi targeting
             lastTargetPos = assignedTarget.position;
             lastPosState = LastPosState.active;
             
             p.SetTarget(assignedTarget);
             
-            if (p.curState != AiState.combat) //if not yet in combat, do combat
+            if (p.curState != AiState.combat) //if not yet in combat, do combat, give order
             {
-                    p.SwitchState(AiState.combat);
+                p.SwitchState(AiState.combat);
                     //eyes on, take cover, engage,
                     //might not be this so maybe need run help
                 if((int)UnityEngine.Random.Range(0,10) > 4)
                     p.AssignWaypoint(new Waypoint(WaypointType.TakeCover, assignedTarget.position, UnityEngine.Random.Range(5, 10)));
                 else
-                    p.AssignWaypoint(new Waypoint(WaypointType.Flank, assignedTarget.position, 10));
+                    p.AssignWaypoint(new Waypoint(WaypointType.AdvanceAndTakeCover, assignedTarget.position, 15));
             }
             
             StopCoroutine(StartLastPosDegredation());
             lastPosDowngrading = false;
+
+            return;
         }
-        else
+
+        //--NO direct contacts
+        if (lastPosState != LastPosState.safe && !lastPosDowngrading)
         {
-            if(lastPosState != LastPosState.safe && !lastPosDowngrading)
-            {
-                lastPosDowngrading = true;
-                StartCoroutine(StartLastPosDegredation());
-            }
-                
-            switch(lastPosState) //need reduction time outs
-            {
-                case LastPosState.active:
-                    p.AssignWaypoint(new Waypoint(WaypointType.Flank, lastTargetPos, 10));
-                    p.SetTarget(null);
-                    break;
-                case LastPosState.searchable:
-                    p.SwitchState(AiState.aware);
-                    p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 5));
-                    break;
-                case LastPosState.dead:
-                    p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 7));
-                    break;
-                case LastPosState.safe:
-                    p.SwitchState(AiState.safe);
-                    break;
-            }
-            
+            lastPosDowngrading = true;
+            StartCoroutine(StartLastPosDegredation());
+        }
+
+        if (!p.CurrentWaypointCompleted())
+            return;
+
+        switch (lastPosState) //need reduction time outs
+        {
+            case LastPosState.active:
+                p.AssignWaypoint(new Waypoint(WaypointType.Flank, lastTargetPos, 10));
+                p.SetTarget(null);
+                break;
+            case LastPosState.searchable:
+                p.SwitchState(AiState.aware);
+                p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 5));
+                break;
+            case LastPosState.dead:
+                p.AssignWaypoint(new Waypoint(WaypointType.PatrolArea, lastTargetPos, 7));
+                break;
+            case LastPosState.safe:
+                p.SwitchState(AiState.safe);
+                break;
         }
     }
     IEnumerator StartLastPosDegredation()
@@ -126,10 +129,14 @@ public class PMCsquad : MonoBehaviour
                 break;
         }
     }
-    
+    Transform GetTarget(int memberIndex, List<Transform> targets)
+    {
+        if (targets.Count == 0) return null;
+        return targets[memberIndex % targets.Count];
+    }
     List<Transform> TargetRefresh()
     {
-        List<Transform> targetList = new List<Transform>();
+        HashSet<Transform> targetList = new HashSet<Transform>();
         for (int i = 0; i < squadMembers.Count; i++)
         {
             if (squadMembers[i] == null) continue;
@@ -141,7 +148,7 @@ public class PMCsquad : MonoBehaviour
             }
         }
         
-        return targetList;
+        return new List<Transform>(targetList);
     }
     public void Alert(Vector3 alPos) //if we not in combat and hear sound, we investigate
     {
@@ -191,7 +198,7 @@ public class PMCsquad : MonoBehaviour
                 {
                     float side = (index % 2 == 0) ? 1f : -1f;
                     int rank = (index / 2) + 1;
-                    return (right * side * rank * formationSpacing) - (facing * rank * formationSpacing * 0.5f);
+                    return (right * side * rank * formationSpacing) - (facing * rank * formationSpacing * 1f);
                 }
         }
     }

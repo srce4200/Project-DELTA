@@ -24,10 +24,11 @@ public class PMCmovement : MonoBehaviour
     void Update()
     {
         currentSpeed = agent.velocity.magnitude;
-        animator.SetBool("isWalking", currentSpeed > 0.3f);
         bool sprint = currentSpeed > walkSpeed + 0.5f;
+        bool walking = currentSpeed > 0.3f;
+        animator.SetBool("isWalking", walking);
         animator.SetBool("isSprinting", sprint);
-        pmcWepon.SetSprintAnim(sprint);
+        pmcWepon.SetHandAnimations(walking, sprint);
 
         if (agent.isOnOffMeshLink) //found on reddit for offmeshlink speed control
         {
@@ -47,7 +48,6 @@ public class PMCmovement : MonoBehaviour
         }
     }
 
-    // Notice we added a "sprint" boolean to dictate locomotion type
     public void MoveTo(Vector3 destination, bool sprint = false)
     {
         if (!agent.isActiveAndEnabled) return;

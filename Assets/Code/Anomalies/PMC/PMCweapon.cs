@@ -24,6 +24,8 @@ public class PMCweapon : MonoBehaviour
     PhotonView PV;
     bool isBursting;
     int burstCount = 5;
+
+    bool isSprinting;
     ////----------------------START----------------------------
     void Start()
     {
@@ -33,12 +35,16 @@ public class PMCweapon : MonoBehaviour
         handAnimations = GetComponent<Animator>();
         handAnimations.SetBool("isReloading", false);
     }  
-    public void SetSprintAnim(bool sprint)
+    public void SetHandAnimations(bool walking, bool sprint)
     {
+        handAnimations.SetBool("isWalking", walking);
         handAnimations.SetBool("isSprinting", sprint);
+        isSprinting = sprint;
     }
     public void FullAuto(Transform target)
-    { 
+    {
+        if (isSprinting) return;
+
         if (Time.time >= nextTimeToFire && currentAmmo > 0 && !isReloading)
         {
             nextTimeToFire = Time.time + 0.5f / weaponFirerate;
@@ -53,6 +59,8 @@ public class PMCweapon : MonoBehaviour
 
     public void Semi(Transform target)
     {
+        if (isSprinting) return;
+
         if (Time.time >= nextTimeToFire && currentAmmo > 0 && !isReloading)
         {
             nextTimeToFire = Time.time + 3f / weaponFirerate;
@@ -65,6 +73,8 @@ public class PMCweapon : MonoBehaviour
     }
     public void Burst(Transform target)
     {
+        if (isSprinting) return;
+
         if (!isBursting && !isReloading && currentAmmo > 0 && Time.time >= nextTimeToFire)
         {
             StartCoroutine(BurstRoutine(target));

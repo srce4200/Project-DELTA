@@ -23,8 +23,8 @@ public class MapInfo : MonoBehaviour
 
     //[HideInInspector]public List<Transform> activePlayers = new List<Transform>();
 
-    [HideInInspector] public List<Transform> activeBlufor = new List<Transform>();
-    [HideInInspector] public List<Transform> activeRedfor = new List<Transform>();
+    public List<Transform> activeBlufor = new List<Transform>();
+     public List<Transform> activeRedfor = new List<Transform>();
     private void Awake()
     {
         adminPanelDefault.SetActive(true);

@@ -34,15 +34,22 @@ public class bulletBehaviour : MonoBehaviour
 
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider.gameObject.tag == "redfor" && !targetPlayer)
+            if (hits[i].collider.gameObject.tag == "redfor")
             {
-                TakeDamage(hits[i].collider.gameObject.GetComponent<Bodypart>(), bulletDamage);
+                if (hits[i].collider.gameObject.GetComponent<playerHealth>() != null)
+                    hits[i].collider.gameObject.GetComponent<playerHealth>().TakeDamage(bulletDamage / 2);
+                else
+                    TakeDamage(hits[i].collider.gameObject.GetComponent<Bodypart>(), bulletDamage);
+
                 Quaternion rot = Quaternion.FromToRotation(Vector3.up, hits[i].normal);
                 SpawnEffect(hitEffectFlesh, hits[i].point, rot);
             }
-            if (hits[i].collider.gameObject.tag == "blufor" && targetPlayer)
+            if (hits[i].collider.gameObject.tag == "blufor")
             {
-                hits[i].collider.gameObject.GetComponent<playerHealth>().TakeDamage(bulletDamage / 2);
+                if(hits[i].collider.gameObject.GetComponent<playerHealth>() != null)
+                    hits[i].collider.gameObject.GetComponent<playerHealth>().TakeDamage(bulletDamage / 2);
+                else
+                    TakeDamage(hits[i].collider.gameObject.GetComponent<Bodypart>(), bulletDamage);
 
                 Quaternion rot = Quaternion.FromToRotation(Vector3.up, hits[i].normal);
                 SpawnEffect(hitEffectFlesh, hits[i].point, rot);
