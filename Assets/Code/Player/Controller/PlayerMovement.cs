@@ -304,7 +304,7 @@ public class PlayerMovement : MonoBehaviour
     void ZoomIn()
     {
         if (Input.GetKey(KeyCode.Mouse4)) {
-            GetComponent<ProceduralAim>().ZoomInNOut(true, 1.3f);
+            GetComponent<ProceduralAim>().ZoomInNOut(true, 1.6f);
         }
         else if (Input.GetKey(KeyCode.Mouse3))
         {

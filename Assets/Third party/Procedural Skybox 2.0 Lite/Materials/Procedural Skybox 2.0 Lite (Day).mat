@@ -95,7 +95,7 @@ Material:
     - _OcclusionStrength: 1
     - _Overcast: 0
     - _Parallax: 0.02
-    - _SkyExposure: 1
+    - _SkyExposure: 0.35896835
     - _SkySaturation: 1.15
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -118,7 +118,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GroundColor: {r: 1, g: 1, b: 1, a: 1}
-    - _HorizonColor: {r: 0.8, g: 0.9, b: 1, a: 1}
+    - _HorizonColor: {r: 0.28717467, g: 0.3230715, b: 0.35896835, a: 1}
     - _HorizonFogColor: {r: 0.8254717, g: 0.98603773, b: 1, a: 1}
     - _ZenithColor: {r: 0.39215678, g: 0.7058823, b: 1, a: 1}
   m_BuildTextureStacks: []
