@@ -16,6 +16,7 @@ public class Tablet : Item
     bool zoomedIn;
 
     [Header("F1")]
+    [SerializeField] GameObject f1HolderObject;
     [SerializeField] TextMeshProUGUI mapNameText;
 
     [Header("F2")]
@@ -34,6 +35,7 @@ public class Tablet : Item
     MapInfo mapInfo;
     SupportsMenu supportMain;
 
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -44,7 +46,11 @@ public class Tablet : Item
 
         supportMain = mapInfo.GetComponent<SupportsMenu>();
         airdropSupports = supportMain.avaibleSupports;
-        Setup();
+
+        foreach (SupportScriptable t in airdropSupports)
+        {
+            Instantiate(supportUiPrefab, supportsList).GetComponent<supportUi>().Setup(t.supportName, t.supportPrice, t.supportIcon, this);
+        }
     }
 
     public override void OnEnable()
@@ -72,6 +78,11 @@ public class Tablet : Item
     {
         if (PV == null || !PV.IsMine)
             return;
+
+        if (f1HolderObject.activeSelf)
+        {
+            MapCamMovement();
+        }
 
         Animations_movement();
         ZoomIn();
@@ -118,19 +129,31 @@ public class Tablet : Item
     #endregion
 
     #region Functions
+    void MapCamMovement()
+    {
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+
+        if (Mathf.Abs(scrollInput) > 0.01f)
+        {
+            MapCamController.Instance.ZoomIn(scrollInput);
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            // Read raw screen delta (movement per frame)
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+            Vector3 moveDelta = new Vector3(mouseX, 0f, mouseY);
+
+            MapCamController.Instance.MoveCam(moveDelta);
+        }
+    }
 
     void StartUp()
     {
         chCont.LockControls(true, true);
         chCont.EnableMouseInput(true);
         RequestMenu_Income();
-    }
-    void Setup()
-    {
-        foreach (SupportScriptable t in airdropSupports) 
-        { 
-            Instantiate(supportUiPrefab, supportsList).GetComponent<supportUi>().Setup(t.supportName, t.supportPrice, t.supportIcon, this);
-        }
     }
 
     #region TaskMenu-F2

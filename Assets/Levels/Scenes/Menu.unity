@@ -29092,7 +29092,7 @@ MonoBehaviour:
     - m_Text: TestingMap
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Madeln
+    - m_Text: Abel
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
@@ -29431,9 +29431,8 @@ MonoBehaviour:
   saveLoadUiElement: {fileID: 7411615644383807096, guid: b806b7ca9dd22e64495e9f99cd455b66, type: 3}
   listTransform: {fileID: 334867677}
   mapNames:
-  - CursedExpanse
   - TestingMap
-  - Madeln
+  - Abel
   missionNameField: {fileID: 220450322}
   mapDropdown: {fileID: 1315864991}
 --- !u!1 &1330437036
@@ -38143,9 +38142,8 @@ MonoBehaviour:
   missionNameField: {fileID: 1214427740}
   mapDropdown: {fileID: 1811373707}
   mapNames:
-  - CursedExpanse
   - TestingMap
-  - Madeln
+  - Abel
 --- !u!4 &1750753876
 Transform:
   m_ObjectHideFlags: 0
@@ -38979,7 +38977,7 @@ MonoBehaviour:
     - m_Text: TestingMap
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Madeln
+    - m_Text: Abel
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:

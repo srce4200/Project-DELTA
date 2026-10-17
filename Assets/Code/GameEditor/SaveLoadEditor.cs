@@ -136,10 +136,11 @@ public class SaveLoadEditor : MonoBehaviour
         string json = JsonUtility.ToJson(missionData);
         SaveNewMission(missionData.missionName, missionData.mapName, json); //save path
     }
-    void SaveNewMission(string missionName,string mapName, string json)
+    void SaveNewMission(string missionName, string mapName, string json)
     {
-        File.WriteAllText(Application.dataPath + "/" + missionName + "." + mapName, json);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, missionName + "." + mapName), json);
     }
+
 
     #endregion
 
@@ -147,8 +148,12 @@ public class SaveLoadEditor : MonoBehaviour
     //loads data path info from UI
     public void LoadMission(string missionName, string mapName) //.MapName gets saved in mission name for some reason
     {
-        string saveString = File.ReadAllText(Application.dataPath + "/" + missionName);
-        currentFilePath = Application.dataPath + "/" + missionName;
+        string filePath = Path.Combine(Application.persistentDataPath, missionName);
+        string saveString = File.ReadAllText(filePath);
+        currentFilePath = filePath;
+
+        //string saveString = File.ReadAllText(Application.dataPath + "/" + missionName);
+        //currentFilePath = Application.dataPath + "/" + missionName;
 
         Mission savedMission = JsonUtility.FromJson<Mission>(saveString);
 

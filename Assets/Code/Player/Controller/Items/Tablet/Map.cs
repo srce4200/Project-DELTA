@@ -74,6 +74,7 @@ public class Map : Item
         if (zoomedIn)
         {
             procAim.Aim(true, 8, 2, null);
+            MapCamMovement();
         }
         else
         {
@@ -96,4 +97,24 @@ public class Map : Item
     }
 
     #endregion
+
+    void MapCamMovement()
+    {
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+
+        if (Mathf.Abs(scrollInput) > 0.01f)
+        {
+            MapCamController.Instance.ZoomIn(scrollInput);
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            // Read raw screen delta (movement per frame)
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+            Vector3 moveDelta = new Vector3(-mouseX, 0f, -mouseY);
+
+            MapCamController.Instance.MoveCam(moveDelta);
+        }
+    }
 }

@@ -3315,7 +3315,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: OP FIREPLACE
+  m_text: "\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4167,7 +4167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6043544059116965438
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6561,7 +6561,7 @@ RectTransform:
   m_Father: {fileID: 6565033570976423743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.00000071525574, y: 28.73}
   m_SizeDelta: {x: -0.00000095367, y: -37.46}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6993,7 +6993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9091580191045941868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8333,7 +8333,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7550014964660920943}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -0.0051, y: 0.1439, z: -0.0124}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8341,7 +8341,7 @@ Transform:
   - {fileID: 6340360899663111088}
   - {fileID: 7466904389567767374}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1213987938159033783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8354,9 +8354,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3e1ae803591478711a4a82e14132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomRatio: 1.8
-  lerpTime: 0.1
+  inventoryManager: {fileID: 0}
+  playerMove: {fileID: 0}
+  mainCam: {fileID: 0}
+  PV: {fileID: 0}
+  isSprinting: 0
+  handAnimations: {fileID: 0}
+  soundSource: {fileID: 0}
+  isReloading: 0
+  procAim: {fileID: 0}
   animator: {fileID: 22100000, guid: ec1f8e202ed2b4b4d800a011235a0643, type: 2}
+  f1HolderObject: {fileID: 5915853046057355721}
   mapNameText: {fileID: 3620808917943724404}
   taskList: {fileID: 2556851721415583798}
   taskPrefab: {fileID: 832068521352009290, guid: d215007fa67131343a9fca4570822439, type: 3}
@@ -8907,7 +8915,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7654245975214693366}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.999973
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
